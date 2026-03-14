@@ -21,32 +21,28 @@
       --wa-host: 17183507066;
     }
 
-    body.theme-parade{
-      --bg1:#ff6fa9;
-      --bg2:#ff9a8b;
-      --bg3:#ffd36e;
-      --bg4:#b8f2e6;
-      --bg5:#8ec5ff;
-      --bg6:#c9a7ff;
-      --panel: rgba(255,255,255,.18);
-      --panelBorder: rgba(255,255,255,.24);
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; min-height:100%; }
+
+    html{
+      background: linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3),var(--bg4),var(--bg5),var(--bg6));
+      background-color: var(--bg1);
     }
 
-    *{ box-sizing:border-box; }
-    html,body{
+    body{
       font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color: var(--text);
       overflow-x:hidden;
       scroll-behavior:smooth;
-      min-height: 100vh;
-      min-height: 100dvh;
+      min-height:100vh;
+      min-height:100dvh;
       background: linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3),var(--bg4),var(--bg5),var(--bg6));
       background-size: 320% 320%;
+      -webkit-background-size: 320% 320%;
       background-color: var(--bg1);
       animation: gradientMove 14s ease-in-out infinite;
       position:relative;
       isolation:isolate;
-      -webkit-background-size: 320% 320%;
     }
 
     @keyframes gradientMove{
@@ -258,7 +254,7 @@
 
     .controlsPanel .pill{
       width: 100%;
-      margin: 6px 0;
+      margin: 0;
       text-align: left;
     }
 
@@ -679,13 +675,12 @@
       <div class="sub" id="countdownSub">hasta el 28 de marzo a las 2:00 PM</div>
     </div>
 
-    <button class="pill" id="toggleControls" aria-label="Controles">
+    <button class="pill" id="toggleControls" type="button" aria-label="Controles">
       Controles: <small id="controlsLabel">Abrir</small>
     </button>
 
     <div class="controlsPanel" id="controlsPanel" aria-hidden="true">
-      
-      <button class="pill" id="toggleMusic" aria-label="Música">
+      <button class="pill" id="toggleMusic" type="button" aria-label="Música">
         Música: <small id="musicLabel">On</small>
       </button>
     </div>
@@ -766,247 +761,243 @@
   </section>
 
   <script>
-    const toggleControlsBtn = document.getElementById('toggleControls');
-    const controlsLabel = document.getElementById('controlsLabel');
-    const controlsPanel = document.getElementById('controlsPanel');
-    const countdownTimeEl = document.getElementById('countdownTime');
-    const countdownSubEl = document.getElementById('countdownSub');
-    const bgMusic = document.getElementById('bgMusic');
-    const toggleMusicBtn = document.getElementById('toggleMusic');
-    const musicLabel = document.getElementById('musicLabel');
-    
-    const balloonField = document.getElementById('balloonField');
-    const confirmBtn = document.getElementById('confirmBtn');
-    const declineBtn = document.getElementById('declineBtn');
-    const nombreInput = document.getElementById('nombre');
-    const mensajeEl = document.getElementById('mensaje');
-    const waLinkWrap = document.getElementById('waLinkWrap');
-    const flyerDetalles = document.getElementById('flyerDetalles');
-    const panels = [...document.querySelectorAll('.panel'), flyerDetalles].filter(Boolean);
+    (function(){
+      const toggleControlsBtn = document.getElementById('toggleControls');
+      const controlsLabel = document.getElementById('controlsLabel');
+      const controlsPanel = document.getElementById('controlsPanel');
+      const countdownTimeEl = document.getElementById('countdownTime');
+      const countdownSubEl = document.getElementById('countdownSub');
+      const bgMusic = document.getElementById('bgMusic');
+      const toggleMusicBtn = document.getElementById('toggleMusic');
+      const musicLabel = document.getElementById('musicLabel');
+      const balloonField = document.getElementById('balloonField');
+      const confirmBtn = document.getElementById('confirmBtn');
+      const declineBtn = document.getElementById('declineBtn');
+      const nombreInput = document.getElementById('nombre');
+      const mensajeEl = document.getElementById('mensaje');
+      const waLinkWrap = document.getElementById('waLinkWrap');
+      const flyerDetalles = document.getElementById('flyerDetalles');
+      const panels = [...document.querySelectorAll('.panel'), flyerDetalles].filter(Boolean);
 
-    let controlsOpen = false;
-    let musicEnabled = true;
+      let controlsOpen = false;
+      let musicEnabled = true;
 
-    function setControlsOpen(open){
-      controlsPanel.classList.toggle('open', open);
-      controlsPanel.setAttribute('aria-hidden', String(!open));
-      controlsLabel.textContent = open ? 'Cerrar' : 'Abrir';
-    }
-
-    toggleControlsBtn.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      controlsOpen = !controlsOpen;
-      setControlsOpen(controlsOpen);
-    });
-
-    document.addEventListener('click', (e)=>{
-      const inPanel = controlsPanel.contains(e.target);
-      const inBtn = toggleControlsBtn.contains(e.target);
-      if(!inPanel && !inBtn && controlsOpen){
-        controlsOpen = false;
-        setControlsOpen(false);
+      function setControlsOpen(open){
+        controlsPanel.classList.toggle('open', open);
+        controlsPanel.setAttribute('aria-hidden', String(!open));
+        controlsLabel.textContent = open ? 'Cerrar' : 'Abrir';
       }
-    });
 
-    setControlsOpen(false);
-
-    async function startMusicInstant(){
-      if(!bgMusic) return;
-      try{
-        bgMusic.loop = true;
-        bgMusic.volume = 1;
-        await bgMusic.play();
-        musicEnabled = true;
-        musicLabel.textContent = 'On';
-      }catch(err){
-        musicEnabled = false;
-        musicLabel.textContent = 'Tap';
-      }
-    }
-
-    function stopMusicInstant(){
-      if(!bgMusic) return;
-      bgMusic.pause();
-      musicEnabled = false;
-      musicLabel.textContent = 'Off';
-    }
-
-    toggleMusicBtn.addEventListener('click', async ()=>{
-      if(!bgMusic) return;
-      if(!bgMusic.paused && musicEnabled){
-        stopMusicInstant();
-      } else {
-        await startMusicInstant();
-      }
-    });
-
-    ['pointerdown','touchstart','keydown','scroll'].forEach((evt)=>{
-      window.addEventListener(evt, ()=>{
-        if(bgMusic && (bgMusic.paused || !musicEnabled)) startMusicInstant();
-      }, { once:true, passive: evt === 'touchstart' || evt === 'scroll' });
-    });
-
-    function getNextPartyDate(){
-      const now = new Date();
-      const year = now.getFullYear();
-      let target = new Date(year, 2, 28, 14, 0, 0);
-      if(now > target) target = new Date(year + 1, 2, 28, 14, 0, 0);
-      return target;
-    }
-
-    const targetDate = getNextPartyDate();
-
-    function pad2(n){
-      return String(n).padStart(2, '0');
-    }
-
-    function updateCountdown(){
-      const now = new Date();
-      const diff = targetDate - now;
-      if(diff <= 0){
-        countdownTimeEl.innerHTML = '<strong>¡HOY!</strong>';
-        countdownSubEl.textContent = '🎉 Es el gran día de Mama Lily';
-        return;
-      }
-      const totalSeconds = Math.floor(diff / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const mins = Math.floor((totalSeconds % 3600) / 60);
-      const secs = totalSeconds % 60;
-      countdownTimeEl.innerHTML = `<strong>${days}d</strong> ${pad2(hours)}h ${pad2(mins)}m ${pad2(secs)}s`;
-      countdownSubEl.textContent = 'hasta el 28 de marzo a las 2:00 PM';
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach((entry)=>{
-        if(entry.isIntersecting) entry.target.classList.add('reveal');
+      toggleControlsBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        controlsOpen = !controlsOpen;
+        setControlsOpen(controlsOpen);
       });
-    }, { threshold: 0.2 });
 
-    panels.forEach((el)=> observer.observe(el));
+      document.addEventListener('click', function(e){
+        const inPanel = controlsPanel.contains(e.target);
+        const inBtn = toggleControlsBtn.contains(e.target);
+        if(!inPanel && !inBtn && controlsOpen){
+          controlsOpen = false;
+          setControlsOpen(false);
+        }
+      });
 
-    function getCssVar(name){
-      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-    }
+      setControlsOpen(false);
 
-    function launchSmallConfetti(){
-      const colors = ['#ff7eb6','#ffd166','#cdb4ff','#9bf6ff','#b8f2e6','#ffffff'];
-      for(let i = 0; i < 70; i++){
-        const c = document.createElement('div');
-        c.className = 'confetti';
-        c.style.left = (Math.random() * 100) + 'vw';
-        c.style.background = colors[Math.floor(Math.random() * colors.length)];
-        c.style.animationDuration = (Math.random() * 1.6 + 2.4) + 's';
-        document.body.appendChild(c);
-        setTimeout(()=> c.remove(), 3800);
-      }
-    }
-
-    function sendWhatsApp(detalles){
-      const encoded = encodeURIComponent(detalles);
-      const host = getCssVar('--wa-host').replace(/[^0-9]/g, '');
-      const waUrl = host && host.length >= 8
-        ? `https://wa.me/${host}?text=${encoded}`
-        : `https://api.whatsapp.com/send?text=${encoded}`;
-
-      const opened = window.open(waUrl, '_blank');
-      if(!opened){
-        waLinkWrap.style.display = 'block';
-        waLinkWrap.innerHTML = `No se abrió WhatsApp automáticamente. Toca aquí: <a href="${waUrl}" target="_blank">Enviar RSVP por WhatsApp</a>`;
+      async function startMusicInstant(){
+        if(!bgMusic) return;
+        try{
+          bgMusic.loop = true;
+          bgMusic.volume = 1;
+          await bgMusic.play();
+          musicEnabled = true;
+          musicLabel.textContent = 'On';
+        }catch(err){
+          musicEnabled = false;
+          musicLabel.textContent = 'Tap';
+        }
       }
 
-      launchSmallConfetti();
-    }
-
-    function confirmar(){
-      const nombre = nombreInput.value.trim();
-      waLinkWrap.style.display = 'none';
-      waLinkWrap.innerHTML = '';
-      if(!nombre){
-        mensajeEl.textContent = 'Escribe tu nombre 👀';
-        return;
+      function stopMusicInstant(){
+        if(!bgMusic) return;
+        bgMusic.pause();
+        musicEnabled = false;
+        musicLabel.textContent = 'Off';
       }
-      mensajeEl.textContent = `🎉 ${nombre} confirmó para el cumple de Mama Lily 🎉`;
-      const detalles = [
-        '🎂 *RSVP — MAMA LILY CUMPLE*',
-        `✅ Confirmo asistencia: *${nombre}*`,
-        '',
-        '💖 ¡Nos vemos en la celebración!'
-      ].join('\n');
-      sendWhatsApp(detalles);
-    }
 
-    function declinar(){
-      const nombre = nombreInput.value.trim();
-      waLinkWrap.style.display = 'none';
-      waLinkWrap.innerHTML = '';
-      if(!nombre){
-        mensajeEl.textContent = 'Escribe tu nombre 👀';
-        return;
+      toggleMusicBtn.addEventListener('click', async function(){
+        if(!bgMusic) return;
+        if(!bgMusic.paused && musicEnabled){
+          stopMusicInstant();
+        } else {
+          await startMusicInstant();
+        }
+      });
+
+      ['pointerdown','touchstart','keydown','scroll'].forEach(function(evt){
+        window.addEventListener(evt, function(){
+          if(bgMusic && (bgMusic.paused || !musicEnabled)) startMusicInstant();
+        }, { once:true, passive: evt === 'touchstart' || evt === 'scroll' });
+      });
+
+      function getNextPartyDate(){
+        const now = new Date();
+        const year = now.getFullYear();
+        let target = new Date(year, 2, 28, 14, 0, 0);
+        if(now > target) target = new Date(year + 1, 2, 28, 14, 0, 0);
+        return target;
       }
-      mensajeEl.textContent = `${nombre} indicó que no podrá asistir.`;
-      const detalles = [
-        '🎂 *RSVP — MAMA LILY CUMPLE*',
-        `❌ No podré asistir: *${nombre}*`,
-        '',
-        'Gracias por avisar 💛'
-      ].join('\n');
-      sendWhatsApp(detalles);
-    }
 
-    confirmBtn.addEventListener('click', confirmar);
-    declineBtn.addEventListener('click', declinar);
+      const targetDate = getNextPartyDate();
 
-    
-      const isParade = document.body.classList.contains('theme-parade');
-      themeLabel.textContent = isParade ? 'Pastel Pop' : 'Lila Fiesta';
-    });
-
-    const balloonColors = [
-      'linear-gradient(180deg,#ff78b2,#ff5f96)',
-      'linear-gradient(180deg,#ffd36e,#ffbe45)',
-      'linear-gradient(180deg,#bfa2ff,#9f7aea)',
-      'linear-gradient(180deg,#9be7ff,#73d2ff)',
-      'linear-gradient(180deg,#c6f7e2,#8ee3cf)',
-      'linear-gradient(180deg,#ffffff,#f4dfff)'
-    ];
-
-    function makeBalloon(initial){
-      if(!balloonField) return;
-      const b = document.createElement('div');
-      b.className = 'balloon';
-      b.style.left = Math.random() * 100 + 'vw';
-      b.style.background = balloonColors[Math.floor(Math.random() * balloonColors.length)];
-      b.style.setProperty('--drift', `${(Math.random() * 120 - 60).toFixed(0)}px`);
-      b.style.setProperty('--spin', `${(Math.random() * 18 - 9).toFixed(1)}deg`);
-      b.style.animationDuration = `${Math.random() * 5 + 7}s`;
-      b.style.animationDelay = initial ? `${Math.random() * 2}s` : '0s';
-      balloonField.appendChild(b);
-      setTimeout(()=> b.remove(), 14000);
-    }
-
-    function launchPageConfetti(){
-      const colors = ['#ff7eb6','#ffd166','#cdb4ff','#9bf6ff','#b8f2e6','#ffffff'];
-      for(let i = 0; i < 110; i++){
-        const c = document.createElement('div');
-        c.className = 'confetti';
-        c.style.left = (Math.random() * 100) + 'vw';
-        c.style.background = colors[Math.floor(Math.random() * colors.length)];
-        c.style.animationDuration = (Math.random() * 1.6 + 2.2) + 's';
-        c.style.transform = `translateY(-20px) rotate(${Math.random() * 180}deg)`;
-        document.body.appendChild(c);
-        setTimeout(()=> c.remove(), 4000);
+      function pad2(n){
+        return String(n).padStart(2, '0');
       }
-    }
 
-    launchPageConfetti();
-    setTimeout(()=>{
-      for(let i = 0; i < 16; i++) makeBalloon(true);
-      setInterval(()=> makeBalloon(false), 900);
-    }, 2000);
+      function updateCountdown(){
+        const now = new Date();
+        const diff = targetDate - now;
+        if(diff <= 0){
+          countdownTimeEl.innerHTML = '<strong>¡HOY!</strong>';
+          countdownSubEl.textContent = '🎉 Es el gran día de Mama Lily';
+          return;
+        }
+        const totalSeconds = Math.floor(diff / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+        countdownTimeEl.innerHTML = '<strong>' + days + 'd</strong> ' + pad2(hours) + 'h ' + pad2(mins) + 'm ' + pad2(secs) + 's';
+        countdownSubEl.textContent = 'hasta el 28 de marzo a las 2:00 PM';
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      const observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting) entry.target.classList.add('reveal');
+        });
+      }, { threshold: 0.2 });
+
+      panels.forEach(function(el){ observer.observe(el); });
+
+      function getCssVar(name){
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      }
+
+      function launchSmallConfetti(){
+        const colors = ['#ff7eb6','#ffd166','#cdb4ff','#9bf6ff','#b8f2e6','#ffffff'];
+        for(let i = 0; i < 70; i++){
+          const c = document.createElement('div');
+          c.className = 'confetti';
+          c.style.left = (Math.random() * 100) + 'vw';
+          c.style.background = colors[Math.floor(Math.random() * colors.length)];
+          c.style.animationDuration = (Math.random() * 1.6 + 2.4) + 's';
+          document.body.appendChild(c);
+          setTimeout(function(){ c.remove(); }, 3800);
+        }
+      }
+
+      function sendWhatsApp(detalles){
+        const encoded = encodeURIComponent(detalles);
+        const host = getCssVar('--wa-host').replace(/[^0-9]/g, '');
+        const waUrl = host && host.length >= 8
+          ? 'https://wa.me/' + host + '?text=' + encoded
+          : 'https://api.whatsapp.com/send?text=' + encoded;
+
+        const opened = window.open(waUrl, '_blank');
+        if(!opened){
+          waLinkWrap.style.display = 'block';
+          waLinkWrap.innerHTML = 'No se abrió WhatsApp automáticamente. Toca aquí: <a href="' + waUrl + '" target="_blank">Enviar RSVP por WhatsApp</a>';
+        }
+
+        launchSmallConfetti();
+      }
+
+      function confirmar(){
+        const nombre = nombreInput.value.trim();
+        waLinkWrap.style.display = 'none';
+        waLinkWrap.innerHTML = '';
+        if(!nombre){
+          mensajeEl.textContent = 'Escribe tu nombre 👀';
+          return;
+        }
+        mensajeEl.textContent = '🎉 ' + nombre + ' confirmó para el cumple de Mama Lily 🎉';
+        const detalles = [
+          '🎂 *RSVP — MAMA LILY CUMPLE*',
+          '✅ Confirmo asistencia: *' + nombre + '*',
+          '',
+          '💖 ¡Nos vemos en la celebración!'
+        ].join('\n');
+        sendWhatsApp(detalles);
+      }
+
+      function declinar(){
+        const nombre = nombreInput.value.trim();
+        waLinkWrap.style.display = 'none';
+        waLinkWrap.innerHTML = '';
+        if(!nombre){
+          mensajeEl.textContent = 'Escribe tu nombre 👀';
+          return;
+        }
+        mensajeEl.textContent = nombre + ' indicó que no podrá asistir.';
+        const detalles = [
+          '🎂 *RSVP — MAMA LILY CUMPLE*',
+          '❌ No podré asistir: *' + nombre + '*',
+          '',
+          'Gracias por avisar 💛'
+        ].join('\n');
+        sendWhatsApp(detalles);
+      }
+
+      confirmBtn.addEventListener('click', confirmar);
+      declineBtn.addEventListener('click', declinar);
+
+      const balloonColors = [
+        'linear-gradient(180deg,#ff78b2,#ff5f96)',
+        'linear-gradient(180deg,#ffd36e,#ffbe45)',
+        'linear-gradient(180deg,#bfa2ff,#9f7aea)',
+        'linear-gradient(180deg,#9be7ff,#73d2ff)',
+        'linear-gradient(180deg,#c6f7e2,#8ee3cf)',
+        'linear-gradient(180deg,#ffffff,#f4dfff)'
+      ];
+
+      function makeBalloon(initial){
+        if(!balloonField) return;
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        b.style.left = Math.random() * 100 + 'vw';
+        b.style.background = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+        b.style.setProperty('--drift', String((Math.random() * 120 - 60).toFixed(0)) + 'px');
+        b.style.setProperty('--spin', String((Math.random() * 18 - 9).toFixed(1)) + 'deg');
+        b.style.animationDuration = String(Math.random() * 5 + 7) + 's';
+        b.style.animationDelay = initial ? String(Math.random() * 2) + 's' : '0s';
+        balloonField.appendChild(b);
+        setTimeout(function(){ b.remove(); }, 14000);
+      }
+
+      function launchPageConfetti(){
+        const colors = ['#ff7eb6','#ffd166','#cdb4ff','#9bf6ff','#b8f2e6','#ffffff'];
+        for(let i = 0; i < 110; i++){
+          const c = document.createElement('div');
+          c.className = 'confetti';
+          c.style.left = (Math.random() * 100) + 'vw';
+          c.style.background = colors[Math.floor(Math.random() * colors.length)];
+          c.style.animationDuration = (Math.random() * 1.6 + 2.2) + 's';
+          c.style.transform = 'translateY(-20px) rotate(' + (Math.random() * 180) + 'deg)';
+          document.body.appendChild(c);
+          setTimeout(function(){ c.remove(); }, 4000);
+        }
+      }
+
+      launchPageConfetti();
+      setTimeout(function(){
+        for(let i = 0; i < 16; i++) makeBalloon(true);
+        setInterval(function(){ makeBalloon(false); }, 900);
+      }, 2000);
+    })();
   </script>
 </body>
 </html>
