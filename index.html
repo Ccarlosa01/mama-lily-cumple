@@ -4,9 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mama Lily Cumple</title>
-
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
-
   <style>
     :root{
       --bg1:#5c1a7a;
@@ -15,7 +13,6 @@
       --bg4:#ff9f68;
       --bg5:#ffd166;
       --bg6:#fff1b8;
-
       --panel: rgba(255,255,255,.16);
       --panelBorder: rgba(255,255,255,.22);
       --text: #ffffff;
@@ -31,7 +28,6 @@
       --bg4:#b8f2e6;
       --bg5:#8ec5ff;
       --bg6:#c9a7ff;
-
       --panel: rgba(255,255,255,.18);
       --panelBorder: rgba(255,255,255,.24);
     }
@@ -51,11 +47,11 @@
     }
 
     @keyframes gradientMove{
-      0%   { background-position: 0% 50%; }
-      25%  { background-position: 100% 40%; }
-      50%  { background-position: 80% 100%; }
-      75%  { background-position: 20% 60%; }
-      100% { background-position: 0% 50%; }
+      0%{ background-position:0% 50%; }
+      25%{ background-position:100% 40%; }
+      50%{ background-position:80% 100%; }
+      75%{ background-position:20% 60%; }
+      100%{ background-position:0% 50%; }
     }
 
     body::after{
@@ -74,9 +70,9 @@
     }
 
     @keyframes lightDrift{
-      0%   { transform: translate3d(0,0,0) scale(1); }
-      50%  { transform: translate3d(0,-28px,0) scale(1.06); }
-      100% { transform: translate3d(0,18px,0) scale(1.10); }
+      0%{ transform: translate3d(0,0,0) scale(1); }
+      50%{ transform: translate3d(0,-28px,0) scale(1.06); }
+      100%{ transform: translate3d(0,18px,0) scale(1.10); }
     }
 
     body::before{
@@ -87,26 +83,14 @@
       z-index: -1;
       opacity: .06;
       background-image:
-        repeating-linear-gradient(
-          0deg,
-          rgba(255,255,255,.04) 0px,
-          rgba(255,255,255,.04) 1px,
-          rgba(0,0,0,0) 2px,
-          rgba(0,0,0,0) 6px
-        ),
-        repeating-linear-gradient(
-          90deg,
-          rgba(255,255,255,.03) 0px,
-          rgba(255,255,255,.03) 1px,
-          rgba(0,0,0,0) 2px,
-          rgba(0,0,0,0) 7px
-        );
+        repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0px, rgba(255,255,255,.04) 1px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 6px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 7px);
       animation: grainMove 8s steps(10) infinite;
     }
 
     @keyframes grainMove{
-      0%   { transform: translate3d(0,0,0); }
-      100% { transform: translate3d(-30px,18px,0); }
+      0%{ transform: translate3d(0,0,0); }
+      100%{ transform: translate3d(-30px,18px,0); }
     }
 
     .balloonField{
@@ -155,39 +139,17 @@
     }
 
     @keyframes balloonRise{
-      0%   { transform: translate3d(0,0,0) rotate(0deg); opacity:0; }
-      8%   { opacity:.32; }
-      20%  { transform: translate3d(18px,-22vh,0) rotate(-2deg); }
-      40%  { transform: translate3d(-14px,-46vh,0) rotate(2deg); }
-      60%  { transform: translate3d(22px,-72vh,0) rotate(-3deg); }
-      80%  { transform: translate3d(-18px,-98vh,0) rotate(2deg); }
-      100% { transform: translate3d(var(--drift, 0px), -125vh, 0) rotate(var(--spin, 0deg)); opacity:.28; }
-    }
-
-    @media (max-width:600px){
-      .hero{ padding-top: 12px; padding-bottom: 56px; }
-      .scene{ min-height: auto; padding-bottom: 84px; }
-      .heroText{ padding-top: 18px; max-width: 94%; }
-      .heroText h1{ font-size: clamp(50px,13vw,84px); }
-      .heroText h2{ font-size: clamp(16px,4vw,22px); }
-      .heroText p{ font-size: clamp(.9rem,3.4vw,1rem); max-width:92%; }
-      .heroBadges{ gap:6px; }
-      .heroBadge{ padding:10px 12px; font-size:.78rem; }
-      .scrollHint{ bottom: 10px; }
-    }
-      .heroText h2{ font-size: clamp(16px,4vw,22px); }
-      .heroText p{ font-size: clamp(.9rem,3.4vw,1rem); max-width:92%; }
-      .heroBadges{ gap:6px; }
-      .heroBadge{ padding:10px 12px; font-size:.78rem; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      body, body::before, body::after{ animation:none !important; }
-      .balloon{ animation-duration: 0.01ms !important; opacity:.25; }
+      0%{ transform: translate3d(0,0,0) rotate(0deg); opacity:0; }
+      8%{ opacity:.32; }
+      20%{ transform: translate3d(18px,-22vh,0) rotate(-2deg); }
+      40%{ transform: translate3d(-14px,-46vh,0) rotate(2deg); }
+      60%{ transform: translate3d(22px,-72vh,0) rotate(-3deg); }
+      80%{ transform: translate3d(-18px,-98vh,0) rotate(2deg); }
+      100%{ transform: translate3d(var(--drift, 0px), -125vh, 0) rotate(var(--spin, 0deg)); opacity:.28; }
     }
 
     section{
-      padding: 120px 20px 80px 20px;
+      padding: 120px 20px 80px;
       position: relative;
       z-index: 10;
     }
@@ -307,7 +269,6 @@
 
     .heroText{
       position:relative;
-      inset:auto;
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -315,17 +276,16 @@
       text-align:center;
       z-index: 50;
       padding: clamp(24px,5vh,56px) 20px 0 20px;
-      gap:10px;
+      gap: 10px;
       max-width: 760px;
       margin: 0 auto;
-    }
     }
 
     .heroText::before{
       content:"";
       position:absolute;
       left:50%;
-      top:50%;
+      top:40%;
       width: min(620px, 88vw);
       height: 320px;
       transform: translate(-50%,-50%);
@@ -370,7 +330,7 @@
     }
 
     .heroText h2{
-      margin: 14px 0 0 0;
+      margin: 14px 0 0;
       font-size: clamp(20px, 3vw, 34px);
       font-weight: 900;
       text-transform: uppercase;
@@ -405,14 +365,14 @@
     .scrollHint{
       position:absolute;
       bottom: clamp(8px,2vh,18px);
-      left:0; right:0;
+      left:0;
+      right:0;
       text-align:center;
       font-weight: 900;
       opacity: .92;
       animation: hintFloat 2s ease-in-out infinite;
       z-index:25;
       pointer-events:none;
-    }
     }
 
     @keyframes hintFloat{
@@ -452,9 +412,7 @@
       background: linear-gradient(90deg, rgba(255,255,255,.85), rgba(255,240,196,.92), rgba(255,255,255,.85));
       background-size: 300% 300%;
       animation: borderMove 5.5s linear infinite;
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       opacity:.85;
@@ -462,8 +420,8 @@
     }
 
     @keyframes borderMove{
-      0%{background-position:0% 50%}
-      100%{background-position:100% 50%}
+      0%{ background-position:0% 50%; }
+      100%{ background-position:100% 50%; }
     }
 
     .sparkle{
@@ -502,7 +460,12 @@
       text-shadow: 4px 4px 0 rgba(85,31,97,.42);
     }
 
-    .tagRow{ margin-top: 8px; display:flex; gap:10px; flex-wrap:wrap; }
+    .tagRow{
+      margin-top: 8px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
     .tag{
       font-weight: 900;
@@ -521,7 +484,7 @@
     .tag.vip{ background: rgba(255,245,204,.2); }
 
     .flyerBlurb{
-      margin: 14px 0 0 0;
+      margin: 14px 0 0;
       opacity:.98;
       font-weight:700;
       line-height:1.45;
@@ -548,8 +511,16 @@
       filter: blur(6px);
     }
 
-    .infoGrid{ display:grid; grid-template-columns: 1fr; gap: 14px; margin-top: 6px; }
-    @media (min-width: 780px){ .infoGrid{ grid-template-columns: 1fr 1fr; } }
+    .infoGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    @media (min-width: 780px){
+      .infoGrid{ grid-template-columns: 1fr 1fr; }
+    }
 
     .flyCard{
       background: rgba(255,255,255,.12);
@@ -576,7 +547,11 @@
     .flyValue{ margin-top:6px; font-size: 1.15rem; font-weight: 900; line-height:1.25; }
     .flyValue small{ display:block; margin-top: 6px; font-weight:700; opacity:.92; }
 
-    .flyCTA{ display:flex; justify-content:center; margin-top: 18px; }
+    .flyCTA{
+      display:flex;
+      justify-content:center;
+      margin-top: 18px;
+    }
 
     .flyBtn{
       display:inline-block;
@@ -611,9 +586,9 @@
     }
 
     .panel.reveal{ transform: translateY(0); opacity: 1; }
-    .panel h2{ margin: 0 0 14px 0; font-size: 2rem; }
+    .panel h2{ margin: 0 0 14px; font-size: 2rem; }
 
-    input, select{
+    input{
       width: 100%;
       padding: 14px 14px;
       border-radius: 999px;
@@ -638,6 +613,23 @@
 
     #waLinkWrap a{ color:#fff7b2; text-decoration:underline; }
 
+    .rsvpActions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .rsvpActions button{
+      margin-top:0;
+      flex:1 1 220px;
+    }
+
+    .declineBtn{
+      background:#ffd6d6;
+      color:#7a1a1a;
+    }
+
     .confetti{
       position:fixed;
       top:-10px;
@@ -653,9 +645,27 @@
     @keyframes fall{
       to{ transform: translateY(110vh) rotate(720deg); }
     }
+
+    @media (max-width:600px){
+      .hero{ padding-top:12px; padding-bottom:56px; }
+      .scene{ min-height:auto; padding-bottom:84px; }
+      .heroText{ padding-top:18px; max-width:94%; }
+      .heroText h1{ font-size: clamp(50px,13vw,84px); }
+      .heroText h2{ font-size: clamp(16px,4vw,22px); }
+      .heroText p{ font-size: clamp(.9rem,3.4vw,1rem); max-width:92%; }
+      .heroBadges{ gap:6px; }
+      .heroBadge{ padding:10px 12px; font-size:.78rem; }
+      .scrollHint{ bottom:10px; }
+      .panel{ padding:28px 20px; }
+      .flyer{ padding:28px 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      body, body::before, body::after{ animation:none !important; }
+      .balloon{ animation-duration: 0.01ms !important; opacity:.25; }
+    }
   </style>
 </head>
-
 <body>
   <div class="balloonField" id="balloonField" aria-hidden="true"></div>
 
@@ -674,7 +684,6 @@
       <button class="pill" id="toggleTheme" aria-label="Cambiar tema">
         Modo: <small id="themeLabel">Lila Fiesta</small>
       </button>
-
       <button class="pill" id="toggleMusic" aria-label="Música">
         Música: <small id="musicLabel">On</small>
       </button>
@@ -689,16 +698,13 @@
         <div class="heroKicker">🎈 Invitación especial 🎈</div>
         <h1>Feliz<br>80<br>Lidia Parodi</h1>
         <h2>¡A celebrar juntos!</h2>
-        <p>
-          Acompáñanos a pasar una tarde llena de alegría, cariño, risas y celebración para una persona muy especial.
-        </p>
+        <p>Acompáñanos a pasar una tarde llena de alegría, cariño, risas y celebración para una persona muy especial.</p>
         <div class="heroBadges">
           <div class="heroBadge">Sábado, 28 de marzo</div>
           <div class="heroBadge">2:00 PM</div>
           <div class="heroBadge">Confirma tu asistencia</div>
         </div>
       </div>
-
       <div class="scrollHint">Desliza ↓</div>
     </div>
   </section>
@@ -706,7 +712,6 @@
   <section id="detalles">
     <div class="flyer" id="flyerDetalles">
       <div class="sparkle"></div>
-
       <div class="flyerTop">
         <div>
           <h2 class="flyerTitle">DETALLES DEL CUMPLE</h2>
@@ -715,9 +720,7 @@
             <span class="tag neon">ALEGRÍA</span>
             <span class="tag vip">CELEBRACIÓN</span>
           </div>
-          <p class="flyerBlurb">
-            Queremos compartir una tarde bonita para celebrar a <strong>Mama Lily</strong>. Ven con mucho cariño y ganas de pasarla lindo. 🎉
-          </p>
+          <p class="flyerBlurb">Queremos compartir una tarde bonita para celebrar a <strong>Mama Lily</strong>. Ven con mucho cariño y ganas de pasarla lindo. 🎉</p>
         </div>
       </div>
 
@@ -728,17 +731,14 @@
           <div class="flyLabel">🗓 Fecha</div>
           <div class="flyValue">Sábado, 28 de marzo <small>Reserva la fecha para celebrar con nosotros</small></div>
         </div>
-
         <div class="flyCard">
           <div class="flyLabel">⏰ Hora</div>
           <div class="flyValue">2:00 PM <small>La celebración comienza por la tarde</small></div>
         </div>
-
         <div class="flyCard">
           <div class="flyLabel">📍 Lugar</div>
           <div class="flyValue">REEMPLAZA AQUÍ <small>Agrega la dirección o “te la mando al confirmar”</small></div>
         </div>
-
         <div class="flyCard">
           <div class="flyLabel">🎂 Ambiente</div>
           <div class="flyValue">Familiar y alegre <small>Una tarde especial para compartir, reír y celebrar</small></div>
@@ -754,48 +754,52 @@
   <section id="rsvp">
     <div class="panel">
       <h2>🎟️ RSVP</h2>
-
       <input id="nombre" placeholder="Tu nombre">
-
-      
-
-      <button onclick="confirmar()">✅ CONFIRMAR ASISTENCIA</button>
-      <button onclick="declinar()" style="background:#ffd6d6;color:#7a1a1a">❌ NO PODRÉ ASISTIR</button>
-
+      <div class="rsvpActions">
+        <button id="confirmBtn" type="button">✅ CONFIRMAR ASISTENCIA</button>
+        <button id="declineBtn" type="button" class="declineBtn">❌ NO PODRÉ ASISTIR</button>
+      </div>
       <div id="mensaje" style="margin-top:10px;font-weight:900"></div>
       <div id="waLinkWrap" style="margin-top:10px; display:none; font-weight:900;"></div>
     </div>
   </section>
 
   <script>
-    const toggleControlsBtn = document.getElementById("toggleControls");
-    const controlsLabel = document.getElementById("controlsLabel");
-    const controlsPanel = document.getElementById("controlsPanel");
-    const countdownTimeEl = document.getElementById("countdownTime");
-    const countdownSubEl = document.getElementById("countdownSub");
-    const bgMusic = document.getElementById("bgMusic");
-    const toggleMusicBtn = document.getElementById("toggleMusic");
-    const musicLabel = document.getElementById("musicLabel");
-    const toggleThemeBtn = document.getElementById("toggleTheme");
-    const themeLabel = document.getElementById("themeLabel");
-    const balloonField = document.getElementById("balloonField");
+    const toggleControlsBtn = document.getElementById('toggleControls');
+    const controlsLabel = document.getElementById('controlsLabel');
+    const controlsPanel = document.getElementById('controlsPanel');
+    const countdownTimeEl = document.getElementById('countdownTime');
+    const countdownSubEl = document.getElementById('countdownSub');
+    const bgMusic = document.getElementById('bgMusic');
+    const toggleMusicBtn = document.getElementById('toggleMusic');
+    const musicLabel = document.getElementById('musicLabel');
+    const toggleThemeBtn = document.getElementById('toggleTheme');
+    const themeLabel = document.getElementById('themeLabel');
+    const balloonField = document.getElementById('balloonField');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const declineBtn = document.getElementById('declineBtn');
+    const nombreInput = document.getElementById('nombre');
+    const mensajeEl = document.getElementById('mensaje');
+    const waLinkWrap = document.getElementById('waLinkWrap');
+    const flyerDetalles = document.getElementById('flyerDetalles');
+    const panels = [...document.querySelectorAll('.panel'), flyerDetalles].filter(Boolean);
 
     let controlsOpen = false;
     let musicEnabled = true;
-    let balloonInterval = null;
 
     function setControlsOpen(open){
-      controlsPanel.classList.toggle("open", open);
-      controlsPanel.setAttribute("aria-hidden", String(!open));
-      controlsLabel.textContent = open ? "Cerrar" : "Abrir";
+      controlsPanel.classList.toggle('open', open);
+      controlsPanel.setAttribute('aria-hidden', String(!open));
+      controlsLabel.textContent = open ? 'Cerrar' : 'Abrir';
     }
 
-    toggleControlsBtn.addEventListener("click", ()=>{
+    toggleControlsBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
       controlsOpen = !controlsOpen;
       setControlsOpen(controlsOpen);
     });
 
-    document.addEventListener("pointerdown", (e)=>{
+    document.addEventListener('click', (e)=>{
       const inPanel = controlsPanel.contains(e.target);
       const inBtn = toggleControlsBtn.contains(e.target);
       if(!inPanel && !inBtn && controlsOpen){
@@ -809,15 +813,14 @@
     async function startMusicInstant(){
       if(!bgMusic) return;
       try{
-        bgMusic.currentTime = 0;
         bgMusic.loop = true;
         bgMusic.volume = 1;
         await bgMusic.play();
         musicEnabled = true;
-        musicLabel.textContent = "On";
+        musicLabel.textContent = 'On';
       }catch(err){
         musicEnabled = false;
-        musicLabel.textContent = "Tap";
+        musicLabel.textContent = 'Tap';
       }
     }
 
@@ -825,10 +828,10 @@
       if(!bgMusic) return;
       bgMusic.pause();
       musicEnabled = false;
-      musicLabel.textContent = "Off";
+      musicLabel.textContent = 'Off';
     }
 
-    toggleMusicBtn.addEventListener("click", async ()=>{
+    toggleMusicBtn.addEventListener('click', async ()=>{
       if(!bgMusic) return;
       if(!bgMusic.paused && musicEnabled){
         stopMusicInstant();
@@ -837,20 +840,11 @@
       }
     });
 
-    startMusicInstant();
-
-    function oneGestureStart(){
-      if(bgMusic && (bgMusic.paused || !musicEnabled)) startMusicInstant();
-      window.removeEventListener("pointerdown", oneGestureStart);
-      window.removeEventListener("touchstart", oneGestureStart);
-      window.removeEventListener("keydown", oneGestureStart);
-      window.removeEventListener("scroll", oneGestureStart);
-    }
-
-    window.addEventListener("pointerdown", oneGestureStart, {once:true});
-    window.addEventListener("touchstart", oneGestureStart, {once:true, passive:true});
-    window.addEventListener("keydown", oneGestureStart, {once:true});
-    window.addEventListener("scroll", oneGestureStart, {once:true, passive:true});
+    ['pointerdown','touchstart','keydown','scroll'].forEach((evt)=>{
+      window.addEventListener(evt, ()=>{
+        if(bgMusic && (bgMusic.paused || !musicEnabled)) startMusicInstant();
+      }, { once:true, passive: evt === 'touchstart' || evt === 'scroll' });
+    });
 
     function getNextPartyDate(){
       const now = new Date();
@@ -863,177 +857,156 @@
     const targetDate = getNextPartyDate();
 
     function pad2(n){
-      return String(n).padStart(2, "0");
+      return String(n).padStart(2, '0');
     }
 
     function updateCountdown(){
       const now = new Date();
       const diff = targetDate - now;
-
       if(diff <= 0){
-        countdownTimeEl.innerHTML = `<strong>¡HOY!</strong>`;
-        countdownSubEl.textContent = "🎉 Es el gran día de Mama Lily";
+        countdownTimeEl.innerHTML = '<strong>¡HOY!</strong>';
+        countdownSubEl.textContent = '🎉 Es el gran día de Mama Lily';
         return;
       }
-
       const totalSeconds = Math.floor(diff / 1000);
       const days = Math.floor(totalSeconds / 86400);
       const hours = Math.floor((totalSeconds % 86400) / 3600);
       const mins = Math.floor((totalSeconds % 3600) / 60);
       const secs = totalSeconds % 60;
-
       countdownTimeEl.innerHTML = `<strong>${days}d</strong> ${pad2(hours)}h ${pad2(mins)}m ${pad2(secs)}s`;
-      countdownSubEl.textContent = "hasta el 28 de marzo a las 2:00 PM";
+      countdownSubEl.textContent = 'hasta el 28 de marzo a las 2:00 PM';
     }
 
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    const revealTargets = [
-      ...document.querySelectorAll(".panel"),
-      document.getElementById("flyerDetalles")
-    ].filter(Boolean);
-
-    const obs = new IntersectionObserver((entries)=>{
+    const observer = new IntersectionObserver((entries)=>{
       entries.forEach((entry)=>{
-        if(entry.isIntersecting){
-          entry.target.classList.add("reveal");
-        }
+        if(entry.isIntersecting) entry.target.classList.add('reveal');
       });
     }, { threshold: 0.2 });
 
-    revealTargets.forEach((el)=>obs.observe(el));
+    panels.forEach((el)=> observer.observe(el));
 
     function getCssVar(name){
       return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     }
 
-    function sendWhatsApp(detalles){
-      const waWrap = document.getElementById("waLinkWrap");
-      const encoded = encodeURIComponent(detalles);
-      const host = getCssVar("--wa-host").replace(/[^0-9]/g, "");
-      const waUrl = (host && host.length >= 8)
-        ? `https://wa.me/${host}?text=${encoded}`
-        : `https://api.whatsapp.com/send?text=${encoded}`;
-
-      const opened = window.open(waUrl, "_blank");
-      if(!opened){
-        waWrap.style.display = "block";
-        waWrap.innerHTML = `No se abrió WhatsApp automáticamente. Toca aquí: <a href="${waUrl}" target="_blank">Enviar RSVP por WhatsApp</a>`;
-      }
-
-      const colors = ["#ff7eb6","#ffd166","#cdb4ff","#9bf6ff","#b8f2e6","#ffffff"];
+    function launchSmallConfetti(){
+      const colors = ['#ff7eb6','#ffd166','#cdb4ff','#9bf6ff','#b8f2e6','#ffffff'];
       for(let i = 0; i < 70; i++){
-        const c = document.createElement("div");
-        c.className = "confetti";
-        c.style.left = (Math.random() * 100) + "vw";
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = (Math.random() * 100) + 'vw';
         c.style.background = colors[Math.floor(Math.random() * colors.length)];
-        c.style.animationDuration = (Math.random() * 1.6 + 2.4) + "s";
+        c.style.animationDuration = (Math.random() * 1.6 + 2.4) + 's';
         document.body.appendChild(c);
-        setTimeout(()=>c.remove(), 3800);
+        setTimeout(()=> c.remove(), 3800);
       }
     }
 
-    function confirmar(){
-      const nombre = document.getElementById("nombre").value.trim();
-      const msg = document.getElementById("mensaje");
-      const waWrap = document.getElementById("waLinkWrap");
-      waWrap.style.display = "none";
-      waWrap.innerHTML = "";
+    function sendWhatsApp(detalles){
+      const encoded = encodeURIComponent(detalles);
+      const host = getCssVar('--wa-host').replace(/[^0-9]/g, '');
+      const waUrl = host && host.length >= 8
+        ? `https://wa.me/${host}?text=${encoded}`
+        : `https://api.whatsapp.com/send?text=${encoded}`;
 
-      if(!nombre){
-        msg.textContent = "Escribe tu nombre 👀";
-        return;
+      const opened = window.open(waUrl, '_blank');
+      if(!opened){
+        waLinkWrap.style.display = 'block';
+        waLinkWrap.innerHTML = `No se abrió WhatsApp automáticamente. Toca aquí: <a href="${waUrl}" target="_blank">Enviar RSVP por WhatsApp</a>`;
       }
 
-      msg.textContent = `🎉 ${nombre} confirmó para el cumple de Mama Lily 🎉`;
+      launchSmallConfetti();
+    }
 
+    function confirmar(){
+      const nombre = nombreInput.value.trim();
+      waLinkWrap.style.display = 'none';
+      waLinkWrap.innerHTML = '';
+      if(!nombre){
+        mensajeEl.textContent = 'Escribe tu nombre 👀';
+        return;
+      }
+      mensajeEl.textContent = `🎉 ${nombre} confirmó para el cumple de Mama Lily 🎉`;
       const detalles = [
-        "🎂 *RSVP — MAMA LILY CUMPLE*",
+        '🎂 *RSVP — MAMA LILY CUMPLE*',
         `✅ Confirmo asistencia: *${nombre}*`,
-        "",
-        "💖 ¡Nos vemos en la celebración!"
-      ].join("
-");
-
+        '',
+        '💖 ¡Nos vemos en la celebración!'
+      ].join('\n');
       sendWhatsApp(detalles);
     }
 
     function declinar(){
-      const nombre = document.getElementById("nombre").value.trim();
-      const msg = document.getElementById("mensaje");
-      const waWrap = document.getElementById("waLinkWrap");
-      waWrap.style.display = "none";
-      waWrap.innerHTML = "";
-
+      const nombre = nombreInput.value.trim();
+      waLinkWrap.style.display = 'none';
+      waLinkWrap.innerHTML = '';
       if(!nombre){
-        msg.textContent = "Escribe tu nombre 👀";
+        mensajeEl.textContent = 'Escribe tu nombre 👀';
         return;
       }
-
-      msg.textContent = `${nombre} indicó que no podrá asistir.`;
-
+      mensajeEl.textContent = `${nombre} indicó que no podrá asistir.`;
       const detalles = [
-        "🎂 *RSVP — MAMA LILY CUMPLE*",
+        '🎂 *RSVP — MAMA LILY CUMPLE*',
         `❌ No podré asistir: *${nombre}*`,
-        "",
-        "Gracias por avisar 💛"
-      ].join("
-");
-
+        '',
+        'Gracias por avisar 💛'
+      ].join('\n');
       sendWhatsApp(detalles);
     }
 
-    window.confirmar = confirmar;
-    window.declinar = declinar;
+    confirmBtn.addEventListener('click', confirmar);
+    declineBtn.addEventListener('click', declinar);
 
-    toggleThemeBtn.addEventListener("click", ()=>{
-      document.body.classList.toggle("theme-parade");
-      const isParade = document.body.classList.contains("theme-parade");
-      themeLabel.textContent = isParade ? "Pastel Pop" : "Lila Fiesta";
+    toggleThemeBtn.addEventListener('click', ()=>{
+      document.body.classList.toggle('theme-parade');
+      const isParade = document.body.classList.contains('theme-parade');
+      themeLabel.textContent = isParade ? 'Pastel Pop' : 'Lila Fiesta';
     });
 
     const balloonColors = [
-      "linear-gradient(180deg,#ff78b2,#ff5f96)",
-      "linear-gradient(180deg,#ffd36e,#ffbe45)",
-      "linear-gradient(180deg,#bfa2ff,#9f7aea)",
-      "linear-gradient(180deg,#9be7ff,#73d2ff)",
-      "linear-gradient(180deg,#c6f7e2,#8ee3cf)",
-      "linear-gradient(180deg,#ffffff,#f4dfff)"
+      'linear-gradient(180deg,#ff78b2,#ff5f96)',
+      'linear-gradient(180deg,#ffd36e,#ffbe45)',
+      'linear-gradient(180deg,#bfa2ff,#9f7aea)',
+      'linear-gradient(180deg,#9be7ff,#73d2ff)',
+      'linear-gradient(180deg,#c6f7e2,#8ee3cf)',
+      'linear-gradient(180deg,#ffffff,#f4dfff)'
     ];
 
-    function makeBalloon(initial = false){
+    function makeBalloon(initial){
       if(!balloonField) return;
-      const b = document.createElement("div");
-      b.className = "balloon";
-      b.style.left = Math.random() * 100 + "vw";
+      const b = document.createElement('div');
+      b.className = 'balloon';
+      b.style.left = Math.random() * 100 + 'vw';
       b.style.background = balloonColors[Math.floor(Math.random() * balloonColors.length)];
-      b.style.setProperty("--drift", `${(Math.random() * 120 - 60).toFixed(0)}px`);
-      b.style.setProperty("--spin", `${(Math.random() * 18 - 9).toFixed(1)}deg`);
+      b.style.setProperty('--drift', `${(Math.random() * 120 - 60).toFixed(0)}px`);
+      b.style.setProperty('--spin', `${(Math.random() * 18 - 9).toFixed(1)}deg`);
       b.style.animationDuration = `${Math.random() * 5 + 7}s`;
-      b.style.animationDelay = initial ? `${Math.random() * 2}s` : "0s";
+      b.style.animationDelay = initial ? `${Math.random() * 2}s` : '0s';
       balloonField.appendChild(b);
-      setTimeout(()=>b.remove(), 14000);
+      setTimeout(()=> b.remove(), 14000);
     }
 
     function launchPageConfetti(){
-      const colors = ["#ff7eb6","#ffd166","#cdb4ff","#9bf6ff","#b8f2e6","#ffffff"];
+      const colors = ['#ff7eb6','#ffd166','#cdb4ff','#9bf6ff','#b8f2e6','#ffffff'];
       for(let i = 0; i < 110; i++){
-        const c = document.createElement("div");
-        c.className = "confetti";
-        c.style.left = (Math.random() * 100) + "vw";
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = (Math.random() * 100) + 'vw';
         c.style.background = colors[Math.floor(Math.random() * colors.length)];
-        c.style.animationDuration = (Math.random() * 1.6 + 2.2) + "s";
+        c.style.animationDuration = (Math.random() * 1.6 + 2.2) + 's';
         c.style.transform = `translateY(-20px) rotate(${Math.random() * 180}deg)`;
         document.body.appendChild(c);
-        setTimeout(()=>c.remove(), 4000);
+        setTimeout(()=> c.remove(), 4000);
       }
     }
 
     launchPageConfetti();
     setTimeout(()=>{
       for(let i = 0; i < 16; i++) makeBalloon(true);
-      balloonInterval = setInterval(()=>makeBalloon(false), 900);
+      setInterval(()=> makeBalloon(false), 900);
     }, 2000);
   </script>
 </body>
