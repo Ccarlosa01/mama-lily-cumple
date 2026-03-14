@@ -773,11 +773,10 @@
   </section>
 
   <script>
-  (function () {
+  document.addEventListener('DOMContentLoaded', function () {
     const toggleControlsBtn = document.getElementById('toggleControls');
     const controlsLabel = document.getElementById('controlsLabel');
     const controlsPanel = document.getElementById('controlsPanel');
-    const topBar = document.querySelector('.topBar');
     const countdownTimeEl = document.getElementById('countdownTime');
     const countdownSubEl = document.getElementById('countdownSub');
     const bgMusic = document.getElementById('bgMusic');
@@ -789,11 +788,9 @@
     const nombreInput = document.getElementById('nombre');
     const mensajeEl = document.getElementById('mensaje');
     const waLinkWrap = document.getElementById('waLinkWrap');
-    const flyerDetalles = document.getElementById('flyerDetalles');
-    const panels = [...document.querySelectorAll('.panel'), flyerDetalles].filter(Boolean);
 
     let controlsOpen = false;
-    let musicEnabled = true;
+    let musicEnabled = false;
 
     function setControlsOpen(open) {
       if (!controlsPanel || !controlsLabel) return;
@@ -855,13 +852,11 @@
     }
 
     ['pointerdown', 'touchstart', 'keydown', 'scroll'].forEach(function (evt) {
-      window.addEventListener(
-        evt,
-        function () {
-          if (bgMusic && (bgMusic.paused || !musicEnabled)) startMusicInstant();
-        },
-        { once: true, passive: evt === 'touchstart' || evt === 'scroll' }
-      );
+      window.addEventListener(evt, function () {
+        if (bgMusic && (bgMusic.paused || !musicEnabled)) {
+          startMusicInstant();
+        }
+      }, { once: true, passive: evt === 'touchstart' || evt === 'scroll' });
     });
 
     function getNextPartyDate() {
@@ -881,67 +876,42 @@
     function updateCountdown() {
       if (!countdownTimeEl || !countdownSubEl) return;
       const now = new Date();
-      const diff = targetDate - now;
+      const diff = targetDate.getTime() - now.getTime();
+
       if (diff <= 0) {
         countdownTimeEl.innerHTML = '<strong>¡HOY!</strong>';
         countdownSubEl.textContent = '🎉 Es el gran día de Mama Lily';
         return;
       }
+
       const totalSeconds = Math.floor(diff / 1000);
       const days = Math.floor(totalSeconds / 86400);
       const hours = Math.floor((totalSeconds % 86400) / 3600);
       const mins = Math.floor((totalSeconds % 3600) / 60);
       const secs = totalSeconds % 60;
+
       countdownTimeEl.innerHTML = '<strong>' + days + 'd</strong> ' + pad2(hours) + 'h ' + pad2(mins) + 'm ' + pad2(secs) + 's';
       countdownSubEl.textContent = 'hasta el 28 de marzo a las 2:00 PM';
     }
 
     updateCountdown();
-    setInterval(updateCountdown, 1000);
-
-    if ('IntersectionObserver' in window) {
-      const revealObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) entry.target.classList.add('reveal');
-        });
-      }, { threshold: 0.2 });
-      panels.forEach(function (el) { revealObserver.observe(el); });
-
-      if (flyerDetalles && topBar) {
-        const controlsObserver = new IntersectionObserver(function (entries) {
-          const entry = entries[0];
-          if (!entry) return;
-          if (entry.isIntersecting) {
-            topBar.classList.add('showControls');
-          } else {
-            topBar.classList.remove('showControls');
-            controlsOpen = false;
-            setControlsOpen(false);
-          }
-        }, { threshold: 0.35 });
-        controlsObserver.observe(flyerDetalles);
-      } else if (topBar) {
-        topBar.classList.add('showControls');
-      }
-    } else {
-      panels.forEach(function (el) { el.classList.add('reveal'); });
-      if (topBar) topBar.classList.add('showControls');
-    }
+    window.setInterval(updateCountdown, 1000);
 
     function getCssVar(name) {
       return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     }
 
-    function launchSmallConfetti() {
+    function burstConfetti(count) {
       const colors = ['#ff7eb6', '#ffd166', '#cdb4ff', '#9bf6ff', '#b8f2e6', '#ffffff'];
-      for (let i = 0; i < 70; i++) {
+      for (let i = 0; i < count; i++) {
         const c = document.createElement('div');
         c.className = 'confetti';
-        c.style.left = Math.random() * 100 + 'vw';
+        c.style.left = (Math.random() * 100) + 'vw';
         c.style.background = colors[Math.floor(Math.random() * colors.length)];
-        c.style.animationDuration = Math.random() * 1.6 + 2.4 + 's';
+        c.style.animationDuration = (Math.random() * 1.6 + 2.2) + 's';
+        c.style.transform = 'translateY(-20px) rotate(' + (Math.random() * 180) + 'deg)';
         document.body.appendChild(c);
-        setTimeout(function () { c.remove(); }, 3800);
+        setTimeout(function () { c.remove(); }, 4000);
       }
     }
 
@@ -958,7 +928,8 @@
         waLinkWrap.style.display = 'block';
         waLinkWrap.innerHTML = 'No se abrió WhatsApp automáticamente. Toca aquí: <a href="' + waUrl + '" target="_blank">Enviar RSVP por WhatsApp</a>';
       }
-      launchSmallConfetti();
+
+      burstConfetti(70);
     }
 
     function confirmar() {
@@ -1017,7 +988,7 @@
       if (!balloonField) return;
       const b = document.createElement('div');
       b.className = 'balloon';
-      b.style.left = Math.random() * 100 + 'vw';
+      b.style.left = (Math.random() * 100) + 'vw';
       b.style.background = balloonColors[Math.floor(Math.random() * balloonColors.length)];
       b.style.setProperty('--drift', (Math.random() * 120 - 60).toFixed(0) + 'px');
       b.style.setProperty('--spin', (Math.random() * 18 - 9).toFixed(1) + 'deg');
@@ -1027,26 +998,12 @@
       setTimeout(function () { b.remove(); }, 14000);
     }
 
-    function launchPageConfetti() {
-      const colors = ['#ff7eb6', '#ffd166', '#cdb4ff', '#9bf6ff', '#b8f2e6', '#ffffff'];
-      for (let i = 0; i < 110; i++) {
-        const c = document.createElement('div');
-        c.className = 'confetti';
-        c.style.left = Math.random() * 100 + 'vw';
-        c.style.background = colors[Math.floor(Math.random() * colors.length)];
-        c.style.animationDuration = (Math.random() * 1.6 + 2.2) + 's';
-        c.style.transform = 'translateY(-20px) rotate(' + (Math.random() * 180) + 'deg)';
-        document.body.appendChild(c);
-        setTimeout(function () { c.remove(); }, 4000);
-      }
-    }
-
-    launchPageConfetti();
+    burstConfetti(110);
     setTimeout(function () {
       for (let i = 0; i < 16; i++) makeBalloon(true);
-      setInterval(function () { makeBalloon(false); }, 900);
+      window.setInterval(function () { makeBalloon(false); }, 900);
     }, 2000);
-  })();
-  </script>
+  });
+</script>
 </body>
 </html>
