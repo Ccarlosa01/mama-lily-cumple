@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mama Lily Cumple</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg1:#5c1a7a;
+    --bg2:#8b2fa8;
+    --bg3:#ff5fa2;
+    --bg4:#ff9f68;
+    --bg5:#ffd166;
+    --bg6:#fff1b8;
+
+    --panel: rgba(255,255,255,.16);
+    --panelBorder: rgba(255,255,255,.22);
+    --text: #ffffff;
+    --gold: linear-gradient(45deg,#ffe08a,#ffbf47);
+    --shadow: 0 25px 70px rgba(0,0,0,.28);
+    --wa-host: 17183507066;
+  }
+
+  body.theme-parade{
+    --bg1:#ff6fa9;
+    --bg2:#ff9a8b;
+    --bg3:#ffd36e;
+    --bg4:#b8f2e6;
+    --bg5:#8ec5ff;
+    --bg6:#c9a7ff;
+
+    --panel: rgba(255,255,255,.18);
+    --panelBorder: rgba(255,255,255,.24);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color: var(--text);
+    overflow-x:hidden;
+    scroll-behavior:smooth;
+    background: linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3),var(--bg4),var(--bg5),var(--bg6));
+    background-size: 320% 320%;
+    animation: gradientMove 14s ease-in-out infinite;
+    position:relative;
+  }
+
+  @keyframes gradientMove{
+    0%   { background-position: 0% 50%; }
+    25%  { background-position: 100% 40%; }
+    50%  { background-position: 80% 100%; }
+    75%  { background-position: 20% 60%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  body::after{
+    content:"";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -2;
+    background:
+      radial-gradient(circle at 18% 22%, rgba(255,255,255,.16), transparent 42%),
+      radial-gradient(circle at 82% 30%, rgba(255,255,255,.12), transparent 44%),
+      radial-gradient(circle at 55% 85%, rgba(255,255,255,.10), transparent 52%),
+      radial-gradient(circle at 35% 70%, rgba(255,255,255,.08), transparent 48%);
+    filter: blur(12px);
+    animation: lightDrift 18s ease-in-out infinite alternate;
+  }
+  @keyframes lightDrift{
+    0%   { transform: translate3d(0,0,0) scale(1); }
+    50%  { transform: translate3d(0,-28px,0) scale(1.06); }
+    100% { transform: translate3d(0,18px,0) scale(1.10); }
+  }
+
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    opacity: .06;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,.04) 0px,
+        rgba(255,255,255,.04) 1px,
+        rgba(0,0,0,0) 2px,
+        rgba(0,0,0,0) 6px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,.03) 0px,
+        rgba(255,255,255,.03) 1px,
+        rgba(0,0,0,0) 2px,
+        rgba(0,0,0,0) 7px
+      );
+    animation: grainMove 8s steps(10) infinite;
+  }
+  @keyframes grainMove{
+    0%   { transform: translate3d(0,0,0); }
+    100% { transform: translate3d(-30px,18px,0); }
+  }
+
+  .balloonField{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 30;
+  }
+  .balloon{
+    position:absolute;
+    bottom:-180px;
+    width: clamp(34px, 5vw, 62px);
+    aspect-ratio: 0.8 / 1;
+    border-radius: 55% 55% 52% 52% / 60% 60% 42% 42%;
+    opacity:.96;
+    animation-name: balloonRise;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    box-shadow: inset -8px -14px 18px rgba(0,0,0,.12);
+  }
+  .balloon::before{
+    content:"";
+    position:absolute;
+    bottom:-8px;
+    left:50%;
+    transform:translateX(-50%);
+    width:10px;
+    height:10px;
+    background: inherit;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+  }
+  .balloon::after{
+    content:"";
+    position:absolute;
+    top:100%;
+    left:50%;
+    width:2px;
+    height:80px;
+    transform:translateX(-50%);
+    background: rgba(255,255,255,.75);
+    opacity:.8;
+  }
+  @keyframes balloonRise{
+    0%{ transform: translate3d(0,0,0) rotate(0deg); opacity:0; }
+    8%{ opacity:.96; }
+    100%{ transform: translate3d(var(--drift, 0px), -125vh, 0) rotate(var(--spin, 0deg)); opacity:.92; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    body, body::before, body::after{ animation:none !important; }
+    .balloon{ animation-duration: 0.01ms !important; opacity:.25; }
+  }
+
+  section{ padding: 120px 20px 80px 20px; position: relative; }
+  .hero{ min-height: 100vh; display:flex; align-items:center; justify-content:center; }
+
+  .topBar{
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 9999;
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+    align-items:flex-end;
+  }
+
+  .pill{
+    border: 1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.15);
+    backdrop-filter: blur(12px);
+    color: #fff;
+    border-radius: 999px;
+    padding: 10px 12px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(0,0,0,.16);
+    transition: transform .15s ease, background .15s ease;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .pill:hover{ transform: scale(1.04); }
+  .pill small{opacity:.9;font-weight:800}
+
+  .countdown{
+    border: 1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.14);
+    backdrop-filter: blur(12px);
+    color: #fff;
+    border-radius: 18px;
+    padding: 10px 12px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.18);
+    min-width: 190px;
+    text-align: right;
+  }
+  .countdown .label{
+    font-weight: 900;
+    font-size: .78rem;
+    opacity: .95;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .countdown .time{
+    font-weight: 900;
+    font-size: .95rem;
+    line-height: 1.15;
+  }
+  .countdown .time strong{
+    font-family: 'Bangers', cursive;
+    font-size: 1.15rem;
+    letter-spacing: .6px;
+  }
+  .countdown .sub{
+    font-size: .78rem;
+    opacity: .9;
+    margin-top: 2px;
+    font-weight: 800;
+  }
+
+  .controlsPanel{
+    width: min(260px, 78vw);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.14);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 18px 50px rgba(0,0,0,.22);
+    padding: 10px;
+    transform-origin: top right;
+    transform: translateY(-6px) scale(.96);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease;
+  }
+  .controlsPanel.open{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  .controlsPanel .pill{
+    width: 100%;
+    margin: 6px 0;
+    text-align: left;
+  }
+
+  .scene{ position: relative; width: min(980px, 95vw); height: min(82vh, 760px); }
+
+  .heroText{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    z-index: 20;
+    padding: 20px;
+  }
+  .heroText::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    width: min(620px, 88vw);
+    height: 320px;
+    transform: translate(-50%,-50%);
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(255,255,255,.24), transparent 55%),
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,.18), transparent 55%),
+      radial-gradient(circle at 55% 75%, rgba(255,255,255,.14), transparent 60%);
+    filter: blur(24px);
+    opacity: .95;
+    animation: glowPulse 2.8s ease-in-out infinite;
+    z-index:-1;
+  }
+  @keyframes glowPulse{
+    0%,100%{ transform: translate(-50%,-50%) scale(1); opacity:.85; }
+    50%{ transform: translate(-50%,-50%) scale(1.08); opacity:1; }
+  }
+  .heroKicker{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding: 12px 18px;
+    border-radius:999px;
+    background: rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.26);
+    font-weight:900;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+  }
+  .heroText h1{
+    font-family:'Bangers',cursive;
+    font-size: clamp(72px, 11vw, 154px);
+    margin: 0;
+    line-height:.92;
+    letter-spacing: 2px;
+    text-shadow: 5px 5px 0 rgba(85,31,97,.7);
+  }
+  .heroText h2{
+    margin: 14px 0 0 0;
+    font-size: clamp(20px, 3vw, 34px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+  .heroText p{
+    margin: 14px auto 0;
+    max-width: 620px;
+    font-weight: 700;
+    line-height:1.5;
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+  }
+
+  .heroBadges{
+    margin-top: 26px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+  }
+  .heroBadge{
+    padding:12px 16px;
+    border-radius:999px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.26);
+    font-weight:900;
+    box-shadow:0 10px 24px rgba(0,0,0,.12);
+  }
+
+  .scrollHint{
+    position:absolute;
+    bottom: 10px;
+    left:0; right:0;
+    text-align:center;
+    font-weight: 900;
+    opacity: .92;
+    animation: hintFloat 2s ease-in-out infinite;
+    z-index:25;
+  }
+  @keyframes hintFloat{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(-8px); }
+  }
+
+  .flyer{
+    position: relative;
+    width: min(920px, 95vw);
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 34px;
+    background:
+      radial-gradient(900px 420px at 20% 10%, rgba(255,255,255,.16), transparent 60%),
+      radial-gradient(900px 420px at 85% 20%, rgba(255,255,255,.12), transparent 60%),
+      radial-gradient(900px 420px at 50% 90%, rgba(255,255,255,.10), transparent 65%),
+      rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow: 0 35px 90px rgba(0,0,0,.18);
+    backdrop-filter: blur(18px);
+    transform: translateY(30px);
+    opacity: 0;
+    transition: transform .6s ease, opacity .6s ease;
+    overflow:hidden;
+  }
+  .flyer.reveal{ transform: translateY(0); opacity: 1; }
+
+  .flyer::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    border-radius: 36px;
+    padding:2px;
+    background: linear-gradient(90deg, rgba(255,255,255,.85), rgba(255,240,196,.92), rgba(255,255,255,.85));
+    background-size: 300% 300%;
+    animation: borderMove 5.5s linear infinite;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity:.85;
+    pointer-events:none;
+  }
+  @keyframes borderMove{
+    0%{background-position:0% 50%}
+    100%{background-position:100% 50%}
+  }
+
+  .sparkle{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:.5;
+    background:
+      radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,.9), transparent 60%),
+      radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,.7), transparent 60%),
+      radial-gradient(2px 2px at 60% 30%, rgba(255,255,255,.8), transparent 60%),
+      radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,.7), transparent 60%),
+      radial-gradient(2px 2px at 90% 15%, rgba(255,255,255,.8), transparent 60%),
+      radial-gradient(1px 1px at 45% 90%, rgba(255,255,255,.7), transparent 60%);
+    animation: sparkleDrift 6s ease-in-out infinite;
+  }
+  @keyframes sparkleDrift{
+    0%,100%{ transform: translateY(0); opacity:.45; }
+    50%{ transform: translateY(-10px); opacity:.7; }
+  }
+
+  .flyerTop{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+  .flyerTitle{
+    margin:0;
+    font-family:'Bangers',cursive;
+    font-size: clamp(40px, 4.8vw, 64px);
+    letter-spacing: 2px;
+    text-shadow: 4px 4px 0 rgba(85,31,97,.42);
+  }
+
+  .tagRow{ margin-top: 8px; display:flex; gap:10px; flex-wrap:wrap; }
+  .tag{
+    font-weight: 900;
+    border-radius: 999px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow: 0 10px 26px rgba(0,0,0,.12);
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    font-size: .82rem;
+  }
+  .tag.hot{ background: rgba(255,255,255,.16); }
+  .tag.neon{ background: rgba(255,255,255,.18); }
+  .tag.vip{ background: rgba(255,245,204,.2); }
+
+  .flyerBlurb{ margin: 14px 0 0 0; opacity:.98; font-weight:700; line-height:1.45; max-width: 640px; }
+
+  .flyerDivider{
+    height: 2px;
+    margin: 18px 0 16px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    position: relative;
+  }
+  .flyerDivider::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    width: 120px;
+    height: 10px;
+    transform: translate(-50%,-50%);
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(255,255,255,.55), transparent 65%);
+    filter: blur(6px);
+  }
+
+  .infoGrid{ display:grid; grid-template-columns: 1fr; gap: 14px; margin-top: 6px; }
+  @media (min-width: 780px){ .infoGrid{ grid-template-columns: 1fr 1fr; } }
+
+  .flyCard{
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 22px;
+    padding: 16px 16px 14px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.12);
+    position: relative;
+    overflow:hidden;
+  }
+  .flyCard::before{
+    content:"";
+    position:absolute;
+    inset:-60px -40px auto auto;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.16), transparent 60%);
+    filter: blur(14px);
+  }
+
+  .flyLabel{ font-size:.86rem; letter-spacing:.9px; text-transform:uppercase; opacity:.94; font-weight:900; }
+  .flyValue{ margin-top:6px; font-size: 1.15rem; font-weight: 900; line-height:1.25; }
+  .flyValue small{ display:block; margin-top: 6px; font-weight:700; opacity:.92; }
+
+  .flyCTA{ display:flex; justify-content:center; margin-top: 18px; }
+  .flyBtn{
+    display:inline-block;
+    border:none;
+    padding: 14px 22px;
+    border-radius: 999px;
+    font-weight: 900;
+    color: #5c2a0f;
+    background: var(--gold);
+    cursor:pointer;
+    text-decoration:none;
+    transition: transform .18s ease;
+    box-shadow:0 12px 28px rgba(0,0,0,.12);
+  }
+  .flyBtn:hover{ transform: scale(1.05); }
+
+  .panel{
+    width: min(880px, 95vw);
+    margin: 0 auto;
+    background: var(--panel);
+    border: 1px solid var(--panelBorder);
+    backdrop-filter: blur(16px);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: var(--shadow);
+    transform: translateY(30px);
+    opacity: 0;
+    transition: transform .6s ease, opacity .6s ease;
+  }
+  .panel.reveal{ transform: translateY(0); opacity: 1; }
+  .panel h2{ margin: 0 0 14px 0; font-size: 2rem; }
+
+  input, select{
+    width: 100%;
+    padding: 14px 14px;
+    border-radius: 999px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+
+  button{
+    margin-top: 15px;
+    padding: 14px 22px;
+    border-radius: 999px;
+    border: none;
+    font-weight: 900;
+    background: var(--gold);
+    cursor: pointer;
+    transition: transform .18s ease;
+  }
+  button:hover{ transform: scale(1.05); }
+
+  #waLinkWrap a{ color:#fff7b2; text-decoration:underline; }
+
+  .confetti{
+    position:fixed;
+    top:-10px;
+    width:8px;height:8px;
+    border-radius:2px;
+    animation: fall 3.5s linear forwards;
+    z-index: 9999;
+    pointer-events:none;
+    opacity:.95;
+  }
+  @keyframes fall{
+    to{ transform: translateY(110vh) rotate(720deg); }
+  }
+</style>
+</head>
+
+<body>
+  <div class="balloonField" id="balloonField" aria-hidden="true"></div>
+
+  <div class="topBar">
+    <div class="countdown" id="countdown">
+      <div class="label">Cuenta regresiva</div>
+      <div class="time" id="countdownTime"><strong>—</strong></div>
+      <div class="sub" id="countdownSub">hasta el 28 de marzo a las 2:00 PM</div>
+    </div>
+
+    <button class="pill" id="toggleControls" aria-label="Controles">
+      Controles: <small id="controlsLabel">Abrir</small>
+    </button>
+
+    <div class="controlsPanel" id="controlsPanel" aria-hidden="true">
+      <button class="pill" id="toggleTheme" aria-label="Cambiar tema">
+        Modo: <small id="themeLabel">Lila Fiesta</small>
+      </button>
+
+      <button class="pill" id="toggleMusic" aria-label="Música">
+        Música: <small id="musicLabel">On</small>
+      </button>
+    </div>
+  </div>
+
+  <audio id="bgMusic" src="music.mp3" preload="auto" playsinline></audio>
+
+  <section class="hero" id="inicio">
+    <div class="scene" id="scene">
+      <div class="heroText" id="heroText">
+        <div class="heroKicker">🎈 Invitación especial 🎈</div>
+        <h1>Mama Lily<br>Cumple</h1>
+        <h2>¡A celebrar juntos!</h2>
+        <p>
+          Acompáñanos a pasar una tarde llena de alegría, cariño, risas y celebración para una persona muy especial.
+        </p>
+        <div class="heroBadges">
+          <div class="heroBadge">Sábado, 28 de marzo</div>
+          <div class="heroBadge">2:00 PM</div>
+          <div class="heroBadge">Confirma tu asistencia</div>
+        </div>
+      </div>
+
+      <div class="scrollHint">Desliza ↓</div>
+    </div>
+  </section>
+
+  <section id="detalles">
+    <div class="flyer" id="flyerDetalles">
+      <div class="sparkle"></div>
+
+      <div class="flyerTop">
+        <div>
+          <h2 class="flyerTitle">DETALLES DEL CUMPLE</h2>
+          <div class="tagRow">
+            <span class="tag hot">FAMILIA</span>
+            <span class="tag neon">ALEGRÍA</span>
+            <span class="tag vip">CELEBRACIÓN</span>
+          </div>
+          <p class="flyerBlurb">
+            Queremos compartir una tarde bonita para celebrar a <strong>Mama Lily</strong>. Ven con mucho cariño y ganas de pasarla lindo. 🎉
+          </p>
+        </div>
+      </div>
+
+      <div class="flyerDivider"></div>
+
+      <div class="infoGrid">
+        <div class="flyCard">
+          <div class="flyLabel">🗓 Fecha</div>
+          <div class="flyValue">Sábado, 28 de marzo <small>Reserva la fecha para celebrar con nosotros</small></div>
+        </div>
+
+        <div class="flyCard">
+          <div class="flyLabel">⏰ Hora</div>
+          <div class="flyValue">2:00 PM <small>La celebración comienza por la tarde</small></div>
+        </div>
+
+        <div class="flyCard">
+          <div class="flyLabel">📍 Lugar</div>
+          <div class="flyValue">REEMPLAZA AQUÍ <small>Agrega la dirección o “te la mando al confirmar”</small></div>
+        </div>
+
+        <div class="flyCard">
+          <div class="flyLabel">🎂 Ambiente</div>
+          <div class="flyValue">Familiar y alegre <small>Una tarde especial para compartir, reír y celebrar</small></div>
+        </div>
+      </div>
+
+      <div class="flyCTA">
+        <a class="flyBtn" href="#rsvp">🎟️ CONFIRMAR RSVP</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="rsvp">
+    <div class="panel">
+      <h2>🎟️ RSVP</h2>
+
+      <input id="nombre" placeholder="Tu nombre">
+
+      <select id="plusOnes" onchange="updatePlusOnes()">
+        <option value="0">No traigo invitados</option>
+        <option value="1">+1 invitado</option>
+        <option value="2">+2 invitados</option>
+      </select>
+
+      <div id="plusOneFields"></div>
+
+      <button onclick="confirmar()">📲 ENVIAR POR WHATSAPP</button>
+
+      <div id="mensaje" style="margin-top:10px;font-weight:900"></div>
+      <div id="waLinkWrap" style="margin-top:10px; display:none; font-weight:900;"></div>
+    </div>
+  </section>
+
+<script>
+  const toggleControlsBtn = document.getElementById("toggleControls");
+  const controlsLabel = document.getElementById("controlsLabel");
+  const controlsPanel = document.getElementById("controlsPanel");
+
+  function setControlsOpen(open){
+    controlsPanel.classList.toggle("open", open);
+    controlsPanel.setAttribute("aria-hidden", String(!open));
+    controlsLabel.textContent = open ? "Cerrar" : "Abrir";
+  }
+
+  let controlsOpen = false;
+  toggleControlsBtn.addEventListener("click", ()=>{
+    controlsOpen = !controlsOpen;
+    setControlsOpen(controlsOpen);
+  });
+
+  document.addEventListener("pointerdown", (e)=>{
+    const inPanel = controlsPanel.contains(e.target);
+    const inBtn = toggleControlsBtn.contains(e.target);
+    if(!inPanel && !inBtn && controlsOpen){
+      controlsOpen = false;
+      setControlsOpen(false);
+    }
+  });
+  setControlsOpen(false);
+
+  const MUSIC_START_AT = 0;
+  const bgMusic = document.getElementById("bgMusic");
+  const toggleMusicBtn = document.getElementById("toggleMusic");
+  const musicLabel = document.getElementById("musicLabel");
+  let musicEnabled = true;
+  let fading = false;
+
+  function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+  function fadeVolumeTo(targetVol, durationMs){
+    if(!bgMusic || fading) return;
+    fading = true;
+    const startVol = bgMusic.volume;
+    const start = performance.now();
+    const dur = Math.max(80, durationMs);
+    function step(t){
+      const p = clamp((t - start) / dur, 0, 1);
+      bgMusic.volume = startVol + (targetVol - startVol) * p;
+      if(p < 1) requestAnimationFrame(step);
+      else fading = false;
+    }
+    requestAnimationFrame(step);
+  }
+
+  async function startMusicWithFade(){
+    if(!bgMusic) return;
+    try{
+      bgMusic.currentTime = MUSIC_START_AT;
+      bgMusic.loop = true;
+      bgMusic.volume = 0;
+      await bgMusic.play();
+      fadeVolumeTo(1.0, 1400);
+      musicEnabled = true;
+      musicLabel.textContent = "On";
+    }catch(err){
+      musicEnabled = false;
+      musicLabel.textContent = "Tap";
+    }
+  }
+
+  function stopMusicWithFade(){
+    if(!bgMusic) return;
+    fadeVolumeTo(0.0, 700);
+    setTimeout(()=>{ try{ bgMusic.pause(); }catch(e){} }, 750);
+    musicEnabled = false;
+    musicLabel.textContent = "Off";
+  }
+
+  toggleMusicBtn.addEventListener("click", async ()=>{
+    if(!bgMusic) return;
+    if(!bgMusic.paused && musicEnabled){ stopMusicWithFade(); return; }
+    await startMusicWithFade();
+  });
+
+  startMusicWithFade();
+
+  function oneGestureStart(){
+    if(bgMusic && (bgMusic.paused || !musicEnabled)) startMusicWithFade();
+    window.removeEventListener("pointerdown", oneGestureStart);
+    window.removeEventListener("touchstart", oneGestureStart);
+    window.removeEventListener("keydown", oneGestureStart);
+    window.removeEventListener("scroll", oneGestureStart);
+  }
+  window.addEventListener("pointerdown", oneGestureStart, {once:true});
+  window.addEventListener("touchstart", oneGestureStart, {once:true, passive:true});
+  window.addEventListener("keydown", oneGestureStart, {once:true});
+  window.addEventListener("scroll", oneGestureStart, {once:true, passive:true});
+
+  const countdownTimeEl = document.getElementById("countdownTime");
+  const countdownSubEl  = document.getElementById("countdownSub");
+
+  function getNextPartyDate(){
+    const now = new Date();
+    const year = now.getFullYear();
+    let target = new Date(year, 2, 28, 14, 0, 0); // March 28, 2:00 PM
+    if(now > target) target = new Date(year + 1, 2, 28, 14, 0, 0);
+    return target;
+  }
+  const targetDate = getNextPartyDate();
+
+  function pad2(n){ return String(n).padStart(2, "0"); }
+
+  function updateCountdown(){
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if(diff <= 0){
+      countdownTimeEl.innerHTML = `<strong>¡HOY!</strong>`;
+      countdownSubEl.textContent = "🎉 Es el gran día de Mama Lily";
+      return;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const mins = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+
+    countdownTimeEl.innerHTML = `<strong>${days}d</strong> ${pad2(hours)}h ${pad2(mins)}m ${pad2(secs)}s`;
+    countdownSubEl.textContent = "hasta el 28 de marzo a las 2:00 PM";
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  const revealTargets = [ ...document.querySelectorAll(".panel"), document.getElementById("flyerDetalles") ].filter(Boolean);
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add("reveal");
+    });
+  }, {threshold: .2});
+  revealTargets.forEach(el => obs.observe(el));
+
+  function updatePlusOnes(){
+    const count = parseInt(document.getElementById("plusOnes").value, 10);
+    const container = document.getElementById("plusOneFields");
+    container.innerHTML = "";
+    for(let i = 1; i <= count; i++){
+      const input = document.createElement("input");
+      input.placeholder = "Nombre del invitado " + i;
+      input.className = "plusGuest";
+      container.appendChild(input);
+    }
+  }
+  updatePlusOnes();
+
+  function getCssVar(name){
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function confirmar(){
+    const nombre = document.getElementById("nombre").value.trim();
+    const plusCount = parseInt(document.getElementById("plusOnes").value, 10);
+    const invitados = Array.from(document.querySelectorAll(".plusGuest")).map(i => i.value.trim()).filter(Boolean);
+
+    const msg = document.getElementById("mensaje");
+    const waWrap = document.getElementById("waLinkWrap");
+    waWrap.style.display = "none";
+    waWrap.innerHTML = "";
+
+    if(!nombre){ msg.textContent = "Escribe tu nombre 👀"; return; }
+    if(invitados.length !== plusCount){ msg.textContent = "Escribe los nombres de tus invitados 👀"; return; }
+
+    msg.textContent = "🎉 " + nombre + " ya confirmó para el cumple de Mama Lily 🎉";
+
+    const invitadosTxt = plusCount === 0 ? "0 acompañantes" : `Acompañantes (${plusCount}): ${invitados.join(", ")}`;
+
+    const detalles = [
+      "🎂 *RSVP — MAMA LILY CUMPLE*",
+      `✅ Confirmo: *${nombre}*`,
+      `👥 ${invitadosTxt}`,
+      "",
+      "💖 ¡Nos vemos en la celebración!"
+    ].join("\n");
+
+    const encoded = encodeURIComponent(detalles);
+    const host = getCssVar("--wa-host").replace(/[^0-9]/g, "");
+    const waUrl = (host && host.length >= 8)
+      ? `https://wa.me/${host}?text=${encoded}`
+      : `https://api.whatsapp.com/send?text=${encoded}`;
+
+    const opened = window.open(waUrl, "_blank");
+    if(!opened){
+      waWrap.style.display = "block";
+      waWrap.innerHTML = `No se abrió WhatsApp automáticamente. Toca aquí: <a href="${waUrl}" target="_blank">Enviar RSVP por WhatsApp</a>`;
+    }
+
+    const colors = ["#ff7eb6","#ffd166","#cdb4ff","#9bf6ff","#b8f2e6","#ffffff"];
+    for(let i=0;i<70;i++){
+      const c=document.createElement("div");
+      c.className="confetti";
+      c.style.left = (Math.random()*100) + "vw";
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = (Math.random()*1.6 + 2.4) + "s";
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(), 3800);
+    }
+  }
+
+  const toggleThemeBtn = document.getElementById("toggleTheme");
+  const themeLabel = document.getElementById("themeLabel");
+  toggleThemeBtn.addEventListener("click", ()=>{
+    document.body.classList.toggle("theme-parade");
+    const isParade = document.body.classList.contains("theme-parade");
+    themeLabel.textContent = isParade ? "Pastel Pop" : "Lila Fiesta";
+  });
+
+  const balloonField = document.getElementById("balloonField");
+  const balloonColors = [
+    "linear-gradient(180deg,#ff78b2,#ff5f96)",
+    "linear-gradient(180deg,#ffd36e,#ffbe45)",
+    "linear-gradient(180deg,#bfa2ff,#9f7aea)",
+    "linear-gradient(180deg,#9be7ff,#73d2ff)",
+    "linear-gradient(180deg,#c6f7e2,#8ee3cf)",
+    "linear-gradient(180deg,#ffffff,#f4dfff)"
+  ];
+
+  function makeBalloon(initial = false){
+    if(!balloonField) return;
+    const b = document.createElement("div");
+    b.className = "balloon";
+    b.style.left = Math.random() * 100 + "vw";
+    b.style.background = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+    b.style.setProperty("--drift", `${(Math.random() * 120 - 60).toFixed(0)}px`);
+    b.style.setProperty("--spin", `${(Math.random() * 18 - 9).toFixed(1)}deg`);
+    b.style.animationDuration = `${Math.random() * 5 + 7}s`;
+    b.style.animationDelay = initial ? `${Math.random() * 2}s` : "0s";
+    balloonField.appendChild(b);
+    setTimeout(()=>b.remove(), 14000);
+  }
+
+  for(let i = 0; i < 16; i++) makeBalloon(true);
+  setInterval(()=>makeBalloon(false), 900);
+</script>
+</body>
+</html>
