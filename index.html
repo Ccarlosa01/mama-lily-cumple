@@ -774,208 +774,145 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', function () {
+
+    /* CONTROLS PANEL */
     const toggleControlsBtn = document.getElementById('toggleControls');
     const controlsLabel = document.getElementById('controlsLabel');
     const controlsPanel = document.getElementById('controlsPanel');
-    const countdownTimeEl = document.getElementById('countdownTime');
-    const countdownSubEl = document.getElementById('countdownSub');
-    const bgMusic = document.getElementById('bgMusic');
-    const toggleMusicBtn = document.getElementById('toggleMusic');
-    const musicLabel = document.getElementById('musicLabel');
-    const balloonField = document.getElementById('balloonField');
-    const confirmBtn = document.getElementById('confirmBtn');
-    const declineBtn = document.getElementById('declineBtn');
-    const nombreInput = document.getElementById('nombre');
-    const mensajeEl = document.getElementById('mensaje');
-    const waLinkWrap = document.getElementById('waLinkWrap');
 
     let controlsOpen = false;
-    let musicEnabled = false;
 
-    function setControlsOpen(open) {
-      if (!controlsPanel || !controlsLabel) return;
+    function setControlsOpen(open){
       controlsPanel.classList.toggle('open', open);
       controlsPanel.setAttribute('aria-hidden', String(!open));
       controlsLabel.textContent = open ? 'Cerrar' : 'Abrir';
     }
 
-    if (toggleControlsBtn) {
-      toggleControlsBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        controlsOpen = !controlsOpen;
-        setControlsOpen(controlsOpen);
-      });
-    }
+    toggleControlsBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      controlsOpen = !controlsOpen;
+      setControlsOpen(controlsOpen);
+    });
 
-    document.addEventListener('click', function (e) {
-      if (!controlsPanel || !toggleControlsBtn) return;
-      const inPanel = controlsPanel.contains(e.target);
-      const inBtn = toggleControlsBtn.contains(e.target);
-      if (!inPanel && !inBtn && controlsOpen) {
+    document.addEventListener('click', (e)=>{
+      if(!controlsPanel.contains(e.target) && !toggleControlsBtn.contains(e.target)){
         controlsOpen = false;
         setControlsOpen(false);
       }
     });
 
-    setControlsOpen(false);
 
-    async function startMusicInstant() {
-      if (!bgMusic || !musicLabel) return;
-      try {
+    /* MUSIC */
+
+    const bgMusic = document.getElementById('bgMusic');
+    const toggleMusicBtn = document.getElementById('toggleMusic');
+    const musicLabel = document.getElementById('musicLabel');
+
+    let musicEnabled = false;
+
+    async function startMusic(){
+      try{
         bgMusic.loop = true;
         bgMusic.volume = 1;
         await bgMusic.play();
         musicEnabled = true;
         musicLabel.textContent = 'On';
-      } catch (err) {
-        musicEnabled = false;
+      }catch(err){
         musicLabel.textContent = 'Tap';
       }
     }
 
-    function stopMusicInstant() {
-      if (!bgMusic || !musicLabel) return;
+    function stopMusic(){
       bgMusic.pause();
       musicEnabled = false;
       musicLabel.textContent = 'Off';
     }
 
-    if (toggleMusicBtn) {
-      toggleMusicBtn.addEventListener('click', async function () {
-        if (!bgMusic) return;
-        if (!bgMusic.paused && musicEnabled) {
-          stopMusicInstant();
-        } else {
-          await startMusicInstant();
-        }
-      });
-    }
-
-    ['pointerdown', 'touchstart', 'keydown', 'scroll'].forEach(function (evt) {
-      window.addEventListener(evt, function () {
-        if (bgMusic && (bgMusic.paused || !musicEnabled)) {
-          startMusicInstant();
-        }
-      }, { once: true, passive: evt === 'touchstart' || evt === 'scroll' });
+    toggleMusicBtn.addEventListener('click', ()=>{
+      if(musicEnabled){
+        stopMusic();
+      }else{
+        startMusic();
+      }
     });
 
-    function getNextPartyDate() {
+    /* allow music after first interaction */
+
+    ['pointerdown','touchstart','keydown','scroll'].forEach(evt=>{
+      window.addEventListener(evt, ()=>{
+        if(!musicEnabled) startMusic();
+      }, {once:true});
+    });
+
+
+    /* COUNTDOWN */
+
+    const countdownTimeEl = document.getElementById('countdownTime');
+    const countdownSubEl = document.getElementById('countdownSub');
+
+    function getNextPartyDate(){
       const now = new Date();
       const year = now.getFullYear();
-      let target = new Date(year, 2, 28, 14, 0, 0);
-      if (now > target) target = new Date(year + 1, 2, 28, 14, 0, 0);
+      let target = new Date(year,2,28,14,0,0);
+      if(now>target) target = new Date(year+1,2,28,14,0,0);
       return target;
     }
 
     const targetDate = getNextPartyDate();
 
-    function pad2(n) {
-      return String(n).padStart(2, '0');
-    }
+    function pad2(n){return String(n).padStart(2,'0');}
 
-    function updateCountdown() {
-      if (!countdownTimeEl || !countdownSubEl) return;
+    function updateCountdown(){
+
       const now = new Date();
-      const diff = targetDate.getTime() - now.getTime();
+      const diff = targetDate-now;
 
-      if (diff <= 0) {
+      if(diff<=0){
         countdownTimeEl.innerHTML = '<strong>¡HOY!</strong>';
         countdownSubEl.textContent = '🎉 Es el gran día de Mama Lily';
         return;
       }
 
-      const totalSeconds = Math.floor(diff / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const mins = Math.floor((totalSeconds % 3600) / 60);
-      const secs = totalSeconds % 60;
+      const totalSeconds = Math.floor(diff/1000);
+      const days = Math.floor(totalSeconds/86400);
+      const hours = Math.floor((totalSeconds%86400)/3600);
+      const mins = Math.floor((totalSeconds%3600)/60);
+      const secs = totalSeconds%60;
 
-      countdownTimeEl.innerHTML = '<strong>' + days + 'd</strong> ' + pad2(hours) + 'h ' + pad2(mins) + 'm ' + pad2(secs) + 's';
-      countdownSubEl.textContent = 'hasta el 28 de marzo a las 2:00 PM';
+      countdownTimeEl.innerHTML = `<strong>${days}d</strong> ${pad2(hours)}h ${pad2(mins)}m ${pad2(secs)}s`;
+
     }
 
     updateCountdown();
-    window.setInterval(updateCountdown, 1000);
+    setInterval(updateCountdown,1000);
 
-    function getCssVar(name) {
-      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-    }
 
-    function burstConfetti(count) {
-      const colors = ['#ff7eb6', '#ffd166', '#cdb4ff', '#9bf6ff', '#b8f2e6', '#ffffff'];
-      for (let i = 0; i < count; i++) {
-        const c = document.createElement('div');
-        c.className = 'confetti';
-        c.style.left = (Math.random() * 100) + 'vw';
-        c.style.background = colors[Math.floor(Math.random() * colors.length)];
-        c.style.animationDuration = (Math.random() * 1.6 + 2.2) + 's';
-        c.style.transform = 'translateY(-20px) rotate(' + (Math.random() * 180) + 'deg)';
+    /* CONFETTI */
+
+    function burstConfetti(count){
+
+      const colors=['#ff7eb6','#ffd166','#cdb4ff','#9bf6ff','#b8f2e6','#ffffff'];
+
+      for(let i=0;i<count;i++){
+
+        const c=document.createElement('div');
+        c.className='confetti';
+        c.style.left=Math.random()*100+'vw';
+        c.style.background=colors[Math.floor(Math.random()*colors.length)];
+        c.style.animationDuration=(Math.random()*1.6+2.2)+'s';
+
         document.body.appendChild(c);
-        setTimeout(function () { c.remove(); }, 4000);
+
+        setTimeout(()=>c.remove(),4000);
       }
     }
 
-    function sendWhatsApp(detalles) {
-      if (!waLinkWrap) return;
-      const encoded = encodeURIComponent(detalles);
-      const host = getCssVar('--wa-host').replace(/[^0-9]/g, '');
-      const waUrl = host && host.length >= 8
-        ? 'https://wa.me/' + host + '?text=' + encoded
-        : 'https://api.whatsapp.com/send?text=' + encoded;
 
-      const opened = window.open(waUrl, '_blank');
-      if (!opened) {
-        waLinkWrap.style.display = 'block';
-        waLinkWrap.innerHTML = 'No se abrió WhatsApp automáticamente. Toca aquí: <a href="' + waUrl + '" target="_blank">Enviar RSVP por WhatsApp</a>';
-      }
+    /* BALLOONS */
 
-      burstConfetti(70);
-    }
+    const balloonField=document.getElementById('balloonField');
 
-    function confirmar() {
-      if (!nombreInput || !mensajeEl || !waLinkWrap) return;
-      const nombre = nombreInput.value.trim();
-      waLinkWrap.style.display = 'none';
-      waLinkWrap.innerHTML = '';
-      if (!nombre) {
-        mensajeEl.textContent = 'Escribe tu nombre 👀';
-        return;
-      }
-      mensajeEl.textContent = '🎉 ' + nombre + ' confirmó para el cumple de Mama Lily 🎉';
-      const detalles = [
-        '🎂 *RSVP — MAMA LILY CUMPLE*',
-        '✅ Confirmo asistencia: *' + nombre + '*',
-        '',
-        '💖 ¡Nos vemos en la celebración!'
-      ].join('
-');
-      sendWhatsApp(detalles);
-    }
-
-    function declinar() {
-      if (!nombreInput || !mensajeEl || !waLinkWrap) return;
-      const nombre = nombreInput.value.trim();
-      waLinkWrap.style.display = 'none';
-      waLinkWrap.innerHTML = '';
-      if (!nombre) {
-        mensajeEl.textContent = 'Escribe tu nombre 👀';
-        return;
-      }
-      mensajeEl.textContent = nombre + ' indicó que no podrá asistir.';
-      const detalles = [
-        '🎂 *RSVP — MAMA LILY CUMPLE*',
-        '❌ No podré asistir: *' + nombre + '*',
-        '',
-        'Gracias por avisar 💛'
-      ].join('
-');
-      sendWhatsApp(detalles);
-    }
-
-    if (confirmBtn) confirmBtn.addEventListener('click', confirmar);
-    if (declineBtn) declineBtn.addEventListener('click', declinar);
-
-    const balloonColors = [
+    const balloonColors=[
       'linear-gradient(180deg,#ff78b2,#ff5f96)',
       'linear-gradient(180deg,#ffd36e,#ffbe45)',
       'linear-gradient(180deg,#bfa2ff,#9f7aea)',
@@ -984,25 +921,80 @@
       'linear-gradient(180deg,#ffffff,#f4dfff)'
     ];
 
-    function makeBalloon(initial) {
-      if (!balloonField) return;
-      const b = document.createElement('div');
-      b.className = 'balloon';
-      b.style.left = (Math.random() * 100) + 'vw';
-      b.style.background = balloonColors[Math.floor(Math.random() * balloonColors.length)];
-      b.style.setProperty('--drift', (Math.random() * 120 - 60).toFixed(0) + 'px');
-      b.style.setProperty('--spin', (Math.random() * 18 - 9).toFixed(1) + 'deg');
-      b.style.animationDuration = (Math.random() * 5 + 7) + 's';
-      b.style.animationDelay = initial ? (Math.random() * 2) + 's' : '0s';
+    function makeBalloon(initial=false){
+
+      const b=document.createElement('div');
+      b.className='balloon';
+
+      b.style.left=Math.random()*100+'vw';
+      b.style.background=balloonColors[Math.floor(Math.random()*balloonColors.length)];
+
+      b.style.setProperty('--drift',`${Math.random()*120-60}px`);
+      b.style.setProperty('--spin',`${Math.random()*18-9}deg`);
+
+      b.style.animationDuration=(Math.random()*5+7)+'s';
+
       balloonField.appendChild(b);
-      setTimeout(function () { b.remove(); }, 14000);
+
+      setTimeout(()=>b.remove(),14000);
     }
 
+
+    /* PAGE LOAD EFFECTS */
+
     burstConfetti(110);
-    setTimeout(function () {
-      for (let i = 0; i < 16; i++) makeBalloon(true);
-      window.setInterval(function () { makeBalloon(false); }, 900);
-    }, 2000);
+
+    setTimeout(()=>{
+
+      for(let i=0;i<16;i++) makeBalloon(true);
+
+      setInterval(()=>makeBalloon(false),900);
+
+    },2000);
+
+
+    /* RSVP */
+
+    const confirmBtn=document.getElementById('confirmBtn');
+    const declineBtn=document.getElementById('declineBtn');
+    const nombreInput=document.getElementById('nombre');
+    const mensaje=document.getElementById('mensaje');
+
+    function sendRSVP(type){
+
+      const name=nombreInput.value.trim();
+
+      if(!name){
+        mensaje.textContent='Escribe tu nombre 👀';
+        return;
+      }
+
+      let text='';
+
+      if(type==='yes'){
+        text=`🎂 *RSVP — MAMA LILY CUMPLE*
+✅ Confirmo asistencia: *${name}*`;
+        mensaje.textContent=`🎉 ${name} confirmó asistencia`;
+      }
+
+      if(type==='no'){
+        text=`🎂 *RSVP — MAMA LILY CUMPLE*
+❌ No podré asistir: *${name}*`;
+        mensaje.textContent=`${name} indicó que no podrá asistir`;
+      }
+
+      const url=`https://wa.me/17183507066?text=${encodeURIComponent(text)}`;
+
+      window.open(url,'_blank');
+
+      burstConfetti(70);
+
+    }
+
+    confirmBtn.addEventListener('click',()=>sendRSVP('yes'));
+    declineBtn.addEventListener('click',()=>sendRSVP('no'));
+
+
   });
 </script>
 </body>
