@@ -165,7 +165,16 @@
     }
 
     @media (max-width:600px){
-      .heroText h1{ font-size: clamp(56px,14vw,92px); }
+      .hero{ padding-top: 12px; padding-bottom: 56px; }
+      .scene{ min-height: auto; padding-bottom: 84px; }
+      .heroText{ padding-top: 18px; max-width: 94%; }
+      .heroText h1{ font-size: clamp(50px,13vw,84px); }
+      .heroText h2{ font-size: clamp(16px,4vw,22px); }
+      .heroText p{ font-size: clamp(.9rem,3.4vw,1rem); max-width:92%; }
+      .heroBadges{ gap:6px; }
+      .heroBadge{ padding:10px 12px; font-size:.78rem; }
+      .scrollHint{ bottom: 10px; }
+    }
       .heroText h2{ font-size: clamp(16px,4vw,22px); }
       .heroText p{ font-size: clamp(.9rem,3.4vw,1rem); max-width:92%; }
       .heroBadges{ gap:6px; }
@@ -188,6 +197,8 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      padding-top: 24px;
+      padding-bottom: 40px;
     }
 
     .topBar{
@@ -289,20 +300,24 @@
     .scene{
       position: relative;
       width: min(980px, 95vw);
-      height: min(82vh, 760px);
+      min-height: min(82vh, 760px);
+      height: auto;
+      padding-bottom: 90px;
     }
 
     .heroText{
-      position:absolute;
-      inset:0;
+      position:relative;
+      inset:auto;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:flex-start;
       text-align:center;
       z-index: 50;
-      padding: clamp(40px,8vh,90px) 20px 120px 20px;
+      padding: clamp(24px,5vh,56px) 20px 0 20px;
       gap:10px;
+      max-width: 760px;
+      margin: 0 auto;
     }
     }
 
@@ -389,13 +404,14 @@
 
     .scrollHint{
       position:absolute;
-      bottom: clamp(12px,3vh,28px);
+      bottom: clamp(8px,2vh,18px);
       left:0; right:0;
       text-align:center;
       font-weight: 900;
       opacity: .92;
       animation: hintFloat 2s ease-in-out infinite;
       z-index:25;
+      pointer-events:none;
     }
     }
 
