@@ -574,17 +574,21 @@
       color:#7a1a1a;
     }
 
-    .musicMiniWrap{
+    .musicFloatingWrap{
+      position:absolute;
+      right:10px;
+      bottom:-46px;
       display:flex;
-      justify-content:center;
-      margin-top:18px;
+      justify-content:flex-end;
+      width:100%;
+      pointer-events:auto;
     }
 
     .musicMiniBtn{
       margin-top:0;
-      padding:10px 16px;
-      font-size:.9rem;
-      border-radius:999px;
+      padding:8px 14px;
+      font-size:.82rem;
+      border-radius:12px;
       background: rgba(255,255,255,.16);
       border: 1px solid rgba(255,255,255,.24);
       color:#fff;
@@ -711,7 +715,8 @@
       </div>
       <div id="mensaje" style="margin-top:10px;font-weight:900"></div>
       <div id="waLinkWrap" style="margin-top:10px; display:none; font-weight:900;"></div>
-      <div class="musicMiniWrap">
+      </div>
+      <div class="musicFloatingWrap">
         <button id="toggleMusicMini" type="button" class="musicMiniBtn">🎵 Música: <span id="musicMiniLabel">Off</span></button>
       </div>
     </div>
