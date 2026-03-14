@@ -771,6 +771,18 @@
     const toggleControlsBtn = document.getElementById("toggleControls");
     const controlsLabel = document.getElementById("controlsLabel");
     const controlsPanel = document.getElementById("controlsPanel");
+    const countdownTimeEl = document.getElementById("countdownTime");
+    const countdownSubEl = document.getElementById("countdownSub");
+    const bgMusic = document.getElementById("bgMusic");
+    const toggleMusicBtn = document.getElementById("toggleMusic");
+    const musicLabel = document.getElementById("musicLabel");
+    const toggleThemeBtn = document.getElementById("toggleTheme");
+    const themeLabel = document.getElementById("themeLabel");
+    const balloonField = document.getElementById("balloonField");
+
+    let controlsOpen = false;
+    let musicEnabled = true;
+    let balloonInterval = null;
 
     function setControlsOpen(open){
       controlsPanel.classList.toggle("open", open);
@@ -778,7 +790,6 @@
       controlsLabel.textContent = open ? "Cerrar" : "Abrir";
     }
 
-    let controlsOpen = false;
     toggleControlsBtn.addEventListener("click", ()=>{
       controlsOpen = !controlsOpen;
       setControlsOpen(controlsOpen);
@@ -792,18 +803,13 @@
         setControlsOpen(false);
       }
     });
-    setControlsOpen(false);
 
-    const MUSIC_START_AT = 0;
-    const bgMusic = document.getElementById("bgMusic");
-    const toggleMusicBtn = document.getElementById("toggleMusic");
-    const musicLabel = document.getElementById("musicLabel");
-    let musicEnabled = true;
+    setControlsOpen(false);
 
     async function startMusicInstant(){
       if(!bgMusic) return;
       try{
-        bgMusic.currentTime = MUSIC_START_AT;
+        bgMusic.currentTime = 0;
         bgMusic.loop = true;
         bgMusic.volume = 1;
         await bgMusic.play();
@@ -826,9 +832,9 @@
       if(!bgMusic) return;
       if(!bgMusic.paused && musicEnabled){
         stopMusicInstant();
-        return;
+      } else {
+        await startMusicInstant();
       }
-      await startMusicInstant();
     });
 
     startMusicInstant();
@@ -846,9 +852,6 @@
     window.addEventListener("keydown", oneGestureStart, {once:true});
     window.addEventListener("scroll", oneGestureStart, {once:true, passive:true});
 
-    const countdownTimeEl = document.getElementById("countdownTime");
-    const countdownSubEl  = document.getElementById("countdownSub");
-
     function getNextPartyDate(){
       const now = new Date();
       const year = now.getFullYear();
@@ -856,9 +859,12 @@
       if(now > target) target = new Date(year + 1, 2, 28, 14, 0, 0);
       return target;
     }
+
     const targetDate = getNextPartyDate();
 
-    function pad2(n){ return String(n).padStart(2, "0"); }
+    function pad2(n){
+      return String(n).padStart(2, "0");
+    }
 
     function updateCountdown(){
       const now = new Date();
@@ -888,31 +894,59 @@
       document.getElementById("flyerDetalles")
     ].filter(Boolean);
 
-    const obs = new IntersectionObserver(entries=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting) e.target.classList.add("reveal");
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach((entry)=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add("reveal");
+        }
       });
-    }, {threshold: .2});
+    }, { threshold: 0.2 });
 
-    revealTargets.forEach(el => obs.observe(el));
-
-    
+    revealTargets.forEach((el)=>obs.observe(el));
 
     function getCssVar(name){
       return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     }
 
+    function sendWhatsApp(detalles){
+      const waWrap = document.getElementById("waLinkWrap");
+      const encoded = encodeURIComponent(detalles);
+      const host = getCssVar("--wa-host").replace(/[^0-9]/g, "");
+      const waUrl = (host && host.length >= 8)
+        ? `https://wa.me/${host}?text=${encoded}`
+        : `https://api.whatsapp.com/send?text=${encoded}`;
+
+      const opened = window.open(waUrl, "_blank");
+      if(!opened){
+        waWrap.style.display = "block";
+        waWrap.innerHTML = `No se abrió WhatsApp automáticamente. Toca aquí: <a href="${waUrl}" target="_blank">Enviar RSVP por WhatsApp</a>`;
+      }
+
+      const colors = ["#ff7eb6","#ffd166","#cdb4ff","#9bf6ff","#b8f2e6","#ffffff"];
+      for(let i = 0; i < 70; i++){
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = (Math.random() * 100) + "vw";
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.animationDuration = (Math.random() * 1.6 + 2.4) + "s";
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(), 3800);
+      }
+    }
+
     function confirmar(){
       const nombre = document.getElementById("nombre").value.trim();
-
       const msg = document.getElementById("mensaje");
       const waWrap = document.getElementById("waLinkWrap");
       waWrap.style.display = "none";
       waWrap.innerHTML = "";
 
-      if(!nombre){ msg.textContent = "Escribe tu nombre 👀"; return; }
+      if(!nombre){
+        msg.textContent = "Escribe tu nombre 👀";
+        return;
+      }
 
-      msg.textContent = "🎉 " + nombre + " confirmó para el cumple de Mama Lily 🎉";
+      msg.textContent = `🎉 ${nombre} confirmó para el cumple de Mama Lily 🎉`;
 
       const detalles = [
         "🎂 *RSVP — MAMA LILY CUMPLE*",
@@ -927,15 +961,17 @@
 
     function declinar(){
       const nombre = document.getElementById("nombre").value.trim();
-
       const msg = document.getElementById("mensaje");
       const waWrap = document.getElementById("waLinkWrap");
       waWrap.style.display = "none";
       waWrap.innerHTML = "";
 
-      if(!nombre){ msg.textContent = "Escribe tu nombre 👀"; return; }
+      if(!nombre){
+        msg.textContent = "Escribe tu nombre 👀";
+        return;
+      }
 
-      msg.textContent = nombre + " indicó que no podrá asistir.";
+      msg.textContent = `${nombre} indicó que no podrá asistir.`;
 
       const detalles = [
         "🎂 *RSVP — MAMA LILY CUMPLE*",
@@ -948,42 +984,15 @@
       sendWhatsApp(detalles);
     }
 
-    function sendWhatsApp(detalles){
-      const waWrap = document.getElementById("waLinkWrap");
+    window.confirmar = confirmar;
+    window.declinar = declinar;
 
-      const encoded = encodeURIComponent(detalles);
-      const host = getCssVar("--wa-host").replace(/[^0-9]/g, "");
-      const waUrl = (host && host.length >= 8)
-        ? `https://wa.me/${host}?text=${encoded}`
-        : `https://api.whatsapp.com/send?text=${encoded}`;
-
-      const opened = window.open(waUrl, "_blank");
-      if(!opened){
-        waWrap.style.display = "block";
-        waWrap.innerHTML = `No se abrió WhatsApp automáticamente. Toca aquí: <a href="${waUrl}" target="_blank">Enviar RSVP por WhatsApp</a>`;
-      }
-
-      const colors = ["#ff7eb6","#ffd166","#cdb4ff","#9bf6ff","#b8f2e6","#ffffff"];
-      for(let i=0;i<70;i++){
-        const c=document.createElement("div");
-        c.className="confetti";
-        c.style.left = (Math.random()*100) + "vw";
-        c.style.background = colors[Math.floor(Math.random()*colors.length)];
-        c.style.animationDuration = (Math.random()*1.6 + 2.4) + "s";
-        document.body.appendChild(c);
-        setTimeout(()=>c.remove(), 3800);
-      }
-    }
-
-    const toggleThemeBtn = document.getElementById("toggleTheme");
-    const themeLabel = document.getElementById("themeLabel");
     toggleThemeBtn.addEventListener("click", ()=>{
       document.body.classList.toggle("theme-parade");
       const isParade = document.body.classList.contains("theme-parade");
       themeLabel.textContent = isParade ? "Pastel Pop" : "Lila Fiesta";
     });
 
-    const balloonField = document.getElementById("balloonField");
     const balloonColors = [
       "linear-gradient(180deg,#ff78b2,#ff5f96)",
       "linear-gradient(180deg,#ffd36e,#ffbe45)",
@@ -1024,7 +1033,7 @@
     launchPageConfetti();
     setTimeout(()=>{
       for(let i = 0; i < 16; i++) makeBalloon(true);
-      setInterval(()=>makeBalloon(false), 900);
+      balloonInterval = setInterval(()=>makeBalloon(false), 900);
     }, 2000);
   </script>
 </body>
