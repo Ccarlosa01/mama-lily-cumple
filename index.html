@@ -757,15 +757,10 @@
 
       <input id="nombre" placeholder="Tu nombre">
 
-      <select id="plusOnes" onchange="updatePlusOnes()">
-        <option value="0">No traigo invitados</option>
-        <option value="1">+1 invitado</option>
-        <option value="2">+2 invitados</option>
-      </select>
+      
 
-      <div id="plusOneFields"></div>
-
-      <button onclick="confirmar()">📲 ENVIAR POR WHATSAPP</button>
+      <button onclick="confirmar()">✅ CONFIRMAR ASISTENCIA</button>
+      <button onclick="declinar()" style="background:#ffd6d6;color:#7a1a1a">❌ NO PODRÉ ASISTIR</button>
 
       <div id="mensaje" style="margin-top:10px;font-weight:900"></div>
       <div id="waLinkWrap" style="margin-top:10px; display:none; font-weight:900;"></div>
@@ -901,18 +896,7 @@
 
     revealTargets.forEach(el => obs.observe(el));
 
-    function updatePlusOnes(){
-      const count = parseInt(document.getElementById("plusOnes").value, 10);
-      const container = document.getElementById("plusOneFields");
-      container.innerHTML = "";
-      for(let i = 1; i <= count; i++){
-        const input = document.createElement("input");
-        input.placeholder = "Nombre del invitado " + i;
-        input.className = "plusGuest";
-        container.appendChild(input);
-      }
-    }
-    updatePlusOnes();
+    
 
     function getCssVar(name){
       return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -920,8 +904,6 @@
 
     function confirmar(){
       const nombre = document.getElementById("nombre").value.trim();
-      const plusCount = parseInt(document.getElementById("plusOnes").value, 10);
-      const invitados = Array.from(document.querySelectorAll(".plusGuest")).map(i => i.value.trim()).filter(Boolean);
 
       const msg = document.getElementById("mensaje");
       const waWrap = document.getElementById("waLinkWrap");
@@ -929,19 +911,45 @@
       waWrap.innerHTML = "";
 
       if(!nombre){ msg.textContent = "Escribe tu nombre 👀"; return; }
-      if(invitados.length !== plusCount){ msg.textContent = "Escribe los nombres de tus invitados 👀"; return; }
 
-      msg.textContent = "🎉 " + nombre + " ya confirmó para el cumple de Mama Lily 🎉";
-
-      const invitadosTxt = plusCount === 0 ? "0 acompañantes" : `Acompañantes (${plusCount}): ${invitados.join(", ")}`;
+      msg.textContent = "🎉 " + nombre + " confirmó para el cumple de Mama Lily 🎉";
 
       const detalles = [
         "🎂 *RSVP — MAMA LILY CUMPLE*",
-        `✅ Confirmo: *${nombre}*`,
-        `👥 ${invitadosTxt}`,
+        `✅ Confirmo asistencia: *${nombre}*`,
         "",
         "💖 ¡Nos vemos en la celebración!"
-      ].join("\n");
+      ].join("
+");
+
+      sendWhatsApp(detalles);
+    }
+
+    function declinar(){
+      const nombre = document.getElementById("nombre").value.trim();
+
+      const msg = document.getElementById("mensaje");
+      const waWrap = document.getElementById("waLinkWrap");
+      waWrap.style.display = "none";
+      waWrap.innerHTML = "";
+
+      if(!nombre){ msg.textContent = "Escribe tu nombre 👀"; return; }
+
+      msg.textContent = nombre + " indicó que no podrá asistir.";
+
+      const detalles = [
+        "🎂 *RSVP — MAMA LILY CUMPLE*",
+        `❌ No podré asistir: *${nombre}*`,
+        "",
+        "Gracias por avisar 💛"
+      ].join("
+");
+
+      sendWhatsApp(detalles);
+    }
+
+    function sendWhatsApp(detalles){
+      const waWrap = document.getElementById("waLinkWrap");
 
       const encoded = encodeURIComponent(detalles);
       const host = getCssVar("--wa-host").replace(/[^0-9]/g, "");
