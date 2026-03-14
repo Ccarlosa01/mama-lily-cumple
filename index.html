@@ -111,7 +111,7 @@
     inset: 0;
     pointer-events: none;
     overflow: hidden;
-    z-index: 1;
+    z-index: 0;
   }
   .balloon{
     position:absolute;
@@ -149,6 +149,13 @@
   }
   @keyframes balloonRise{
     0%{ transform: translate3d(0,0,0) rotate(0deg); opacity:0; }
+    8%{ opacity:.32; }
+    20%{ transform: translate3d(18px,-22vh,0) rotate(-2deg); }
+    40%{ transform: translate3d(-14px,-46vh,0) rotate(2deg); }
+    60%{ transform: translate3d(22px,-72vh,0) rotate(-3deg); }
+    80%{ transform: translate3d(-18px,-98vh,0) rotate(2deg); }
+    100%{ transform: translate3d(var(--drift, 0px), -125vh, 0) rotate(var(--spin, 0deg)); opacity:.28; }
+  }
     8%{ opacity:.96; }
     100%{ transform: translate3d(var(--drift, 0px), -125vh, 0) rotate(var(--spin, 0deg)); opacity:.92; }
   }
@@ -253,6 +260,8 @@
   .scene{ position: relative; width: min(980px, 95vw); height: min(82vh, 760px); }
 
   .heroText{
+    position:absolute;
+    z-index:50;
     z-index: 20;
 
     position:absolute;
@@ -356,6 +365,8 @@
   }
 
   .flyer{
+    position: relative;
+    z-index: 50;
     z-index: 20;
 
     position: relative;
@@ -515,6 +526,8 @@
   .flyBtn:hover{ transform: scale(1.05); }
 
   .panel{
+    position: relative;
+    z-index: 50;
     z-index: 20;
 
     width: min(880px, 95vw);
@@ -926,8 +939,25 @@
     setTimeout(()=>b.remove(), 14000);
   }
 
-  for(let i = 0; i < 16; i++) makeBalloon(true);
-  setInterval(()=>makeBalloon(false), 900);
+  function launchPageConfetti(){
+    const colors = ["#ff7eb6","#ffd166","#cdb4ff","#9bf6ff","#b8f2e6","#ffffff"];
+    for(let i = 0; i < 110; i++){
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.style.left = (Math.random() * 100) + "vw";
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDuration = (Math.random() * 1.6 + 2.2) + "s";
+      c.style.transform = `translateY(-20px) rotate(${Math.random() * 180}deg)`;
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(), 4000);
+    }
+  }
+
+  launchPageConfetti();
+  setTimeout(()=>{
+    for(let i = 0; i < 16; i++) makeBalloon(true);
+    setInterval(()=>makeBalloon(false), 900);
+  }, 2000);
 </script>
 </body>
 </html>
