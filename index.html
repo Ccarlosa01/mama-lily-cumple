@@ -641,7 +641,7 @@
   <div class="countdown" id="countdown">
     <div class="label">Cuenta regresiva</div>
     <div class="time" id="countdownTime"><strong>—</strong></div>
-    <div class="sub" id="countdownSub">hasta el 28 de marzo a las 2:00 PM</div>
+    <div class="sub" id="countdownSub">hasta el 28 de marzo a las 12:00 PM</div>
   </div>
 
   <audio id="bgMusic" src="Cumpleaños Feliz Pista.mp3" preload="auto" playsinline></audio>
@@ -655,7 +655,7 @@
         <p>Acompáñanos a pasar una tarde llena de alegría, cariño, risas y celebración para una persona muy especial.</p>
         <div class="heroBadges">
           <div class="heroBadge">Sábado, 28 de marzo</div>
-          <div class="heroBadge">2:00 PM</div>
+          <div class="heroBadge">12:00 PM</div>
           <div class="heroBadge">Confirma tu asistencia</div>
         </div>
       </div>
@@ -780,8 +780,8 @@
       function getNextPartyDate() {
         const now = new Date();
         const year = now.getFullYear();
-        let target = new Date(year, 2, 28, 14, 0, 0);
-        if (now > target) target = new Date(year + 1, 2, 28, 14, 0, 0);
+        let target = new Date(year, 2, 28, 12, 0, 0);
+        if (now > target) target = new Date(year + 1, 2, 28, 12, 0, 0);
         return target;
       }
 
@@ -809,7 +809,7 @@
         const secs = totalSeconds % 60;
 
         countdownTimeEl.innerHTML = '<strong>' + days + 'd</strong> ' + pad2(hours) + 'h ' + pad2(mins) + 'm ' + pad2(secs) + 's';
-        countdownSubEl.textContent = 'hasta el 28 de marzo a las 2:00 PM';
+        countdownSubEl.textContent = 'hasta el 28 de marzo a las 12:00 PM';
       }
 
       updateCountdown();
